@@ -1,20 +1,15 @@
+import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TileMap {
-	int [][]	tileIds;
-	public int[][] getTileIds(){
-		return tileIds;
+	private Map<Point, Tile> grid = new HashMap<>();
+
+	public void setTile(Point pos, Tile tile){
+		grid.put(pos, tile);
 	}
-	public TileMap(int height, int width){
-		tileIds=new int[height][width];
+
+	public Tile getTile(Point pos) {
+		return grid.get(pos);
 	}
-	public void setTileId(int row, int column, int id){
-		tileIds[row][column]=id;
-	}
-	public int getTileId(int row, int column){
-		return tileIds[row][column];
-	}
-	public void setAllIds(int[][] ids){
-		tileIds=ids;
-	}
-	
 }
