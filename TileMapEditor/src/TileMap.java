@@ -1,10 +1,10 @@
 
-public class TileInfo {
+public class TileMap {
 	int [][]	tileIds;
 	public int[][] getTileIds(){
 		return tileIds;
 	}
-	public TileInfo(int height, int width){
+	public TileMap(int height, int width){
 		tileIds=new int[height][width];
 	}
 	public void setTileId(int row, int column, int id){
