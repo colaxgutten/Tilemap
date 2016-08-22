@@ -138,69 +138,9 @@ public class MainWindow extends Application {
 		}
 		);
 		Canvas canvas = new Canvas();
-		canvas.setFocusTraversable(true);
-		canvas.setOnMouseClicked(e -> {
-			canvas.requestFocus();
-			double x = e.getX();
-			double y = e.getY();
-			int tileX=(int)Math.floor(x/tileSize)+canvasXpos;
-			int tileY=(int)Math.floor(y/tileSize)+canvasYpos;
-			int i = leftClickSelectedItem;
-			if (e.getButton().equals(MouseButton.SECONDARY))
-				i = rightClickselectedItem;
-			if (tileX < 16 && tileY<16 && tileX>=0 && tileY >=0){
-				tiles[tileX][tileY].setTileImageId(i);
-				if (solid.isSelected())
-					tiles[tileX][tileY].setSolid(true);
-				else
-					tiles[tileX][tileY].setSolid(false);
-			}
-				
-		});
-		canvas.setOnMouseDragged(e -> {
-			int x = (int) (Math.floor(e.getX())/tileSize)+canvasXpos;
-			int y = (int) (Math.floor(e.getY())/tileSize)+canvasYpos;
-			if (x<0 || x>=16 || y<0 || y>=16){
-				
-			} else {
-			if (e.getButton()==MouseButton.PRIMARY){
-				tiles[x][y].setTileImageId(leftClickSelectedItem);
-			}
-			else if (e.getButton()==MouseButton.SECONDARY){
-				tiles[x][y].setTileImageId(rightClickselectedItem);
-			}
-			if (solid.isSelected())
-				tiles[x][y].setSolid(true);
-			else
-				tiles[x][y].setSolid(false);
-			}
-		});
-		canvas.setFocusTraversable(true);
-		canvas.setOnKeyPressed(new EventHandler<KeyEvent>(){
+		
+		setCanvasEvents(canvas);
 
-			@Override
-			public void handle(KeyEvent event) {
-				
-				switch (event.getCode()){
-				case UP : canvasYpos+=1;
-					System.out.println("Up");
-					break;
-				case RIGHT : canvasXpos-=1;
-				System.out.println("Right");
-					break;
-				case DOWN : canvasYpos-=1;
-				System.out.println("Down");
-					break;
-				case LEFT : canvasXpos+=1;
-				System.out.println("Left");
-					break;
-				case SPACE : canvasXpos=0; canvasYpos=0;
-					break;
-				}
-				
-			}
-			
-		});
 		HBox leftSideBox = new HBox();
 		propertiesBox = new VBox();
 		propertiesBox.setSpacing(20);
@@ -238,6 +178,72 @@ public class MainWindow extends Application {
 		}
 		canvas.setFocusTraversable(true);
 	}
+	
+	private void setCanvasEvents(Canvas canvas) {
+		canvas.setOnMouseClicked(e -> {
+			canvas.requestFocus();
+			double x = e.getX();
+			double y = e.getY();
+			int tileX=(int)Math.floor(x/tileSize)+canvasXpos;
+			int tileY=(int)Math.floor(y/tileSize)+canvasYpos;
+			int i = leftClickSelectedItem;
+			if (e.getButton().equals(MouseButton.SECONDARY))
+				i = rightClickselectedItem;
+			if (tileX < 16 && tileY<16 && tileX>=0 && tileY >=0){
+				tiles[tileX][tileY].setTileImageId(i);
+				if (solid.isSelected())
+					tiles[tileX][tileY].setSolid(true);
+				else
+					tiles[tileX][tileY].setSolid(false);
+			}
+				
+		});
+		canvas.setOnMouseDragged(e -> {
+			int x = (int) (Math.floor(e.getX())/tileSize)+canvasXpos;
+			int y = (int) (Math.floor(e.getY())/tileSize)+canvasYpos;
+			if (x<0 || x>=16 || y<0 || y>=16){
+				
+			} else {
+			if (e.getButton()==MouseButton.PRIMARY){
+				tiles[x][y].setTileImageId(leftClickSelectedItem);
+			}
+			else if (e.getButton()==MouseButton.SECONDARY){
+				tiles[x][y].setTileImageId(rightClickselectedItem);
+			}
+			if (solid.isSelected())
+				tiles[x][y].setSolid(true);
+			else
+				tiles[x][y].setSolid(false);
+			}
+		});
+
+		canvas.setOnKeyPressed(new EventHandler<KeyEvent>(){
+
+			@Override
+			public void handle(KeyEvent event) {
+				
+				switch (event.getCode()){
+				case UP : canvasYpos+=1;
+					System.out.println("Up");
+					break;
+				case RIGHT : canvasXpos-=1;
+				System.out.println("Right");
+					break;
+				case DOWN : canvasYpos-=1;
+				System.out.println("Down");
+					break;
+				case LEFT : canvasXpos+=1;
+				System.out.println("Left");
+					break;
+				case SPACE : canvasXpos=0; canvasYpos=0;
+					break;
+				}
+				
+			}
+			
+		});
+	}
+	
 	/**
 	 * draw the tiles in the tilemap"tiles". 
 	 * @param gc
