@@ -17,6 +17,7 @@ public class ImageLoader {
 	}
 
 	public void loadImages(final File folder){
+		System.out.println(folder.exists());
 		for (final File fileEntry : folder.listFiles()){
 			if (fileEntry.isDirectory()){
 				loadImages(fileEntry);

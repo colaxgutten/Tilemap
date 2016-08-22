@@ -40,6 +40,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Path;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
@@ -58,6 +60,7 @@ public class MainWindow extends Application {
 	CheckBox showSolid;
 	CheckBox solid;
 	Tile[][] tiles; 
+	FileChooser filechooser;
 	Image image;
 	Image image2;
 	VBox propertiesBox;
@@ -92,6 +95,13 @@ public class MainWindow extends Application {
 		Button save = new Button("Save");
 		solid = new CheckBox("Solid");
 		showSolid = new CheckBox("Show solid");
+		 filechooser = new FileChooser();
+		 filechooser.setTitle("Open Resource File");
+		 filechooser.getExtensionFilters().addAll(
+		         new ExtensionFilter("Text Files", "*.txt"),
+		         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+		         new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
+		         new ExtensionFilter("All Files", "*.*"));
 		save.setOnAction(e -> {
 			saveFile(new File("saveFile.txt"));
 		});
