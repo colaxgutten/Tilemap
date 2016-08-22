@@ -90,7 +90,6 @@ public class MainWindow extends Application {
 		window.setWidth(mapWidth);
 		window.setHeight(mapHeight);
 		BorderPane border = new BorderPane();
-		TextField tf = new TextField("Heisann!!!!!!!!!!!");
 		ListView<Image> listImages = new ListView<Image>();
 		Button save = new Button("Save");
 		solid = new CheckBox("Solid");
@@ -149,8 +148,6 @@ public class MainWindow extends Application {
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
 		border.setMargin(canvas,new Insets(0,0,0,0));
-		border.setMargin(tf,new Insets(0,0,110,0));
-		border.setBottom(tf);
 		border.setLeft(leftSideBox);
 		border.setRight(save);
 		border.setMargin(save, new Insets(100,100,100,0));
