@@ -45,10 +45,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
-	int mapHeight=720;
-	int mapWidth=1080;
+	int mapHeight=768;
+	int mapWidth=1280;
 	int canvasXpos=0;
 	int canvasYpos=0;
+	int tilesToBePainted = 16;
 	
 	int tileSize=48;
 	
@@ -152,7 +153,7 @@ public class MainWindow extends Application {
 		border.setRight(save);
 		border.setMargin(save, new Insets(100,100,100,0));
 		border.setMargin(listImages, new Insets(0,0,0,0));
-		canvas.setHeight(window.getHeight());
+		canvas.setHeight(720);
 		canvas.setWidth(720);
 		border.setCenter(canvas);
 		
@@ -248,8 +249,8 @@ public class MainWindow extends Application {
 	private void drawTiles(GraphicsContext gc){
 		gc.clearRect(0, 0,768 , 768);
 		Image imageById = null;
-		for (int i=0;i<16;i++){
-			for (int j=0;j<16;j++){
+		for (int i=0;i<tilesToBePainted;i++){
+			for (int j=0;j<tilesToBePainted;j++){
 				if (i>=15 || j>=15 || i <0 || j<0)
 					continue;
 				
@@ -346,6 +347,9 @@ public class MainWindow extends Application {
 			e.printStackTrace();
 		}
 	}
-
+	
+	private int getTileSize(){
+		return (int) Math.min(Math.max(12, Math.floor(mapHeight/this.tileSize)),96);
+	}
 
 }
