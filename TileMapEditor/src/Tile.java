@@ -1,8 +1,12 @@
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tile {
 	private int tileImageId;
 	private int toolId=0;
 	boolean solid;
+	
 	/**
 	 * Creates a Tile with imageId and whether its solid or not
 	 * @param tileImageId
@@ -11,14 +15,6 @@ public class Tile {
 	public Tile(int tileImageId, boolean solid){
 		this.tileImageId=tileImageId;
 		this.solid=solid;
-	}
-	
-	public void setToolId(int id){
-		toolId=id;
-	}
-	
-	public int getToolId(){
-		return toolId;
 	}
 	
 	public void setTileImageId(int id){
@@ -52,9 +48,9 @@ public class Tile {
 		boolean solid =false;
 		int imgId =0;
 		if (split[0]!=null){
-		imgId = Integer.parseInt(split[0]);
-		if (split.length>1)
-		solid = split[1].equals("t") ? true : false;
+			imgId = Integer.parseInt(split[0]);
+			if (split.length>1)
+				solid = split[1].equals("t") ? true : false;
 		}
 		Tile tile = new Tile(imgId,solid);
 		return tile;
@@ -64,4 +60,5 @@ public class Tile {
 		return new Tile(0,false);
 	}
 	
+	public void onWalkOver() {}
 }
