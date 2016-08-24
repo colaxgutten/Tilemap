@@ -28,6 +28,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
@@ -72,6 +73,9 @@ public class MainWindow extends Application {
 	List<Image> images = null;
 	List<Image> sideImages = null;
 	ScrollBar canvasZoom;
+	Label zoomValueLabel;
+	TextField saveName;
+	
 	
 	boolean loaded = false;
 
@@ -86,6 +90,8 @@ public class MainWindow extends Application {
 			System.out.println("file exists! yay");
 			tiles = TileMap.loadFromFile(file);
 		}
+		else
+			tiles = new TileMap();
 		canvasZoom = new ScrollBar();
 		canvasZoom.setMax(96);
 		canvasZoom.setMin(12);
@@ -94,6 +100,7 @@ public class MainWindow extends Application {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				tileSize=newValue.intValue();	
 				tilesToBePainted=(int) Math.floor(16*48/tileSize);
+				zoomValueLabel.setText("Rute størrelse: " + tileSize);
 			}
 		});
 		
@@ -110,6 +117,7 @@ public class MainWindow extends Application {
 		BorderPane border = new BorderPane();
 		ListView<Image> listImages = new ListView<Image>();
 		Button save = new Button("Save");
+		Button load = new Button("Load");
 		solid = new CheckBox("Solid");
 		showSolid = new CheckBox("Show solid");
 		filechooser = new FileChooser();
@@ -118,7 +126,10 @@ public class MainWindow extends Application {
 				new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
 				new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"), new ExtensionFilter("All Files", "*.*"));
 		save.setOnAction(e -> {
-			saveFile(new File("saveFile.txt"));
+			tiles.saveFile(saveName.getText()+".txt");
+		});
+		load.setOnAction(e -> {
+			tiles.loadFile(saveName.getText()+".txt");
 		});
 		listImages.getItems().addAll(sideImages);
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -159,6 +170,10 @@ public class MainWindow extends Application {
 
 		HBox leftSideBox = new HBox();
 		VBox rightSideBox = new VBox();
+		saveName = new TextField();
+		saveName.setText("saveFile");
+		zoomValueLabel = new Label();
+		zoomValueLabel.setText("Rute størrelse: "+tileSize);
 		propertiesBox = new VBox();
 		propertiesBox.setSpacing(20);
 		propertiesBox.getChildren().add(solid);
@@ -166,11 +181,15 @@ public class MainWindow extends Application {
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
 		rightSideBox.getChildren().add(save);
+		rightSideBox.setMargin(save, new Insets(20, 20, 20, 0));
 		rightSideBox.getChildren().add(canvasZoom);
+		rightSideBox.getChildren().add(zoomValueLabel);
+		rightSideBox.getChildren().add(saveName);
+		rightSideBox.getChildren().add(load);
 		border.setMargin(canvas, new Insets(0, 0, 0, 0));
 		border.setLeft(leftSideBox);
 		border.setRight(rightSideBox);
-		border.setMargin(save, new Insets(100, 100, 100, 0));
+
 		border.setMargin(listImages, new Insets(0, 0, 0, 0));
 		canvas.setHeight(720);
 		canvas.setWidth(720);
