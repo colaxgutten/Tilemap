@@ -55,6 +55,11 @@ public class Tile {
 		Tile tile = new Tile(imgId,solid);
 		return tile;
 	}
+	
+	@Override
+	public String toString(){
+		return ""+tileImageId +" "+ solid;
+	}
 
 	public static Tile getBasicTile() {
 		return new Tile(0,false);

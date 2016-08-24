@@ -1,5 +1,6 @@
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,14 @@ public class TileMap {
 		}
 		
 		return grid.get(pos);
+	}
+	
+	public void printTiles(){
+		System.out.println("trying to print tiles");
+		System.out.println("size of tileMap is: "+grid.size());
+		for (Tile t : grid.values()){
+			System.out.println(t);
+		}
 	}
 	
 	public static TileMap loadFromFile(File file) {
