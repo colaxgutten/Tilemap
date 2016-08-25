@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -28,6 +31,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -35,6 +39,7 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -63,6 +68,7 @@ public class MainWindow extends Application {
 	int prevSelectedListViewItemIndex = 0;
 	Stage window;
 	long renderTimer;
+	ComboBox savedFiles;
 	CheckBox showSolid;
 	CheckBox solid;
 	TileMap tiles;
@@ -75,6 +81,9 @@ public class MainWindow extends Application {
 	ScrollBar canvasZoom;
 	Label zoomValueLabel;
 	TextField saveName;
+	ObservableList<String> saveStrings;
+	String currentSaveFile ="";
+	final String saveFolder = "src\\saveFiles";
 	
 	
 	boolean loaded = false;
@@ -89,6 +98,7 @@ public class MainWindow extends Application {
 		if (file.exists()) {
 			System.out.println("file exists! yay");
 			tiles = TileMap.loadFromFile(file);
+			currentSaveFile="saveFile";
 		}
 		else
 			tiles = new TileMap();
@@ -109,6 +119,9 @@ public class MainWindow extends Application {
 		ImageLoader il = new ImageLoader();
 		images = il.getImages("src\\images");
 		sideImages = new ArrayList<Image>(images);
+		saveStrings = FXCollections.observableArrayList();
+		saveStrings.addAll(loadSaveStrings(new File (saveFolder)));
+		savedFiles = new ComboBox(saveStrings);
 		loaded = true;
 		window = primaryStage;
 		window.setTitle("MapEditor");
@@ -129,7 +142,10 @@ public class MainWindow extends Application {
 			tiles.saveFile(saveName.getText()+".txt");
 		});
 		load.setOnAction(e -> {
-			tiles.loadFile(saveName.getText()+".txt");
+			String saveToLoad = (String) savedFiles.getSelectionModel().getSelectedItem();
+			tiles.saveFile(currentSaveFile+".txt");
+			tiles.loadFile(saveToLoad);
+			currentSaveFile=saveToLoad;
 		});
 		listImages.getItems().addAll(sideImages);
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -172,6 +188,7 @@ public class MainWindow extends Application {
 		VBox rightSideBox = new VBox();
 		saveName = new TextField();
 		saveName.setText("saveFile");
+		savedFiles.setTooltip(new Tooltip("Save to load"));
 		zoomValueLabel = new Label();
 		zoomValueLabel.setText("Rute størrelse: "+tileSize);
 		propertiesBox = new VBox();
@@ -180,12 +197,15 @@ public class MainWindow extends Application {
 		propertiesBox.getChildren().add(showSolid);
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
-		rightSideBox.getChildren().add(save);
+
 		rightSideBox.setMargin(save, new Insets(20, 20, 20, 0));
+		rightSideBox.setMargin(zoomValueLabel, new Insets(0,0,20,0));
 		rightSideBox.getChildren().add(canvasZoom);
 		rightSideBox.getChildren().add(zoomValueLabel);
 		rightSideBox.getChildren().add(saveName);
+		rightSideBox.getChildren().add(save);
 		rightSideBox.getChildren().add(load);
+		rightSideBox.getChildren().add(savedFiles);
 		border.setMargin(canvas, new Insets(0, 0, 0, 0));
 		border.setLeft(leftSideBox);
 		border.setRight(rightSideBox);
@@ -327,76 +347,24 @@ public class MainWindow extends Application {
 		}
 	}
 
-	/**
-	 * read from saveFile.txt and parses text to tiles set basic tiles if there
-	 * are null tiles or if reading goes wrong
-	 * 
-	 * @param file
-	 * @return tileSet
-	 */
-	private Tile[][] readSave(File file) {
-		Tile[][] tileSet = new Tile[16][16];
-		if (file.exists()) {
-
-			try (FileReader fr = new FileReader(file)) {
-				BufferedReader br = new BufferedReader(fr);
-
-				for (int j = 0; j < 16; j++) {
-					String infoUnsplitted = br.readLine();
-					String[] info = infoUnsplitted.split("kake");
-					System.out.println(infoUnsplitted);
-					for (int i = 0; i < 16; i++) {
-						System.out.println(info[i]);
-						if (info.length >= i) {
-							tileSet[j][i] = Tile.fromFileToTile(info[i]);
-						}
-					}
-				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
-		for (int i = 0; i < tileSet.length; i++) {
-			for (int j = 0; j < tileSet[i].length; j++) {
-				if (tileSet[i][j] == null) {
-					tileSet[i][j] = Tile.getBasicTile();
-				}
-			}
-		}
-		return tileSet;
-	}
-
-	/**
-	 * saves the current state of the tileset, separate each tile with "kake"
-	 * 
-	 * @param file
-	 */
-	private void saveFile(File file) {
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			FileWriter fw = new FileWriter(file);
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (int i = 0; i < 16; i++) {
-				for (int j = 0; j < 16; j++) {
-					bw.write(tiles.getTile(new Point(i, j)).toSaveString() + "kake");
-					bw.flush();
-				}
-				fw.write("\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private int getTileSize() {
 		return (int) Math.min(Math.max(12, Math.floor(mapHeight / this.tileSize)), 96);
+	}
+	
+	
+	public ArrayList<String> loadSaveStrings(final File folder){
+		ArrayList<String> savedFileStrings = new ArrayList<String>();
+		for (final File fileEntry : folder.listFiles()){
+			if (fileEntry.isDirectory()){
+				loadSaveStrings(fileEntry);
+			} else {
+				if (fileEntry.getName().endsWith(".txt")){
+					String name = fileEntry.getName();
+					savedFileStrings.add(name);
+				}
+			}
+		}
+		return savedFileStrings;
 	}
 
 }
