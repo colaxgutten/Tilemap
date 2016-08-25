@@ -96,7 +96,7 @@ public class MainWindow extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		currentLoadZone = new LoadZone();
-		File file = new File("saveFile.txt");
+		File file = new File(saveFolder+"\\"+"saveFile.txt");
 		if (file.exists()) {
 			System.out.println("file exists! yay");
 			currentLoadZone.loadFromFile("saveFile.txt");
@@ -244,7 +244,7 @@ public class MainWindow extends Application {
 			if (e.getButton().equals(MouseButton.SECONDARY))
 				imageName = rightClickselectedItem;
 			Point p = new Point(tileX, tileY);
-			Tile t = tiles.getTile(p);
+			Tile t = currentLoadZone.getTileMap().getTile(p);
 			t.setTileImageName(imageName);
 			if (solid.isSelected()) {
 				t.setSolid(true);
@@ -259,7 +259,7 @@ public class MainWindow extends Application {
 			int x = (int) (Math.floor(e.getX()) / tileSize) + canvasXpos;
 			int y = (int) (Math.floor(e.getY()) / tileSize) + canvasYpos;
 			Point p = new Point(x, y);
-			Tile t = tiles.getTile(p);
+			Tile t = currentLoadZone.getTileMap().getTile(p);
 			if (e.getButton() == MouseButton.PRIMARY) {
 				t.setTileImageName(leftClickSelectedItem);
 			} else if (e.getButton() == MouseButton.SECONDARY) {

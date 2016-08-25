@@ -26,6 +26,7 @@ public class LoadZone {
 	}
 
 	public void loadFromFile(String fileName) {
+		System.out.println("Denne blir kallt");
 		File file = new File(fileName);
 		
 		try(FileReader fr = new FileReader(file)) {
