@@ -50,7 +50,9 @@ public class LoadZone {
 				int posX = Integer.valueOf(tileArray[0]);
 				int posY = Integer.valueOf(tileArray[1]);
 				String tileImageId = tileArray[2];
-				boolean solid = Boolean.valueOf(tileArray[3]);
+				boolean solid = false;
+				if (tileArray[3].equals("t"))
+					solid=true;
 				
 				Tile tile = new Tile(tileImageId, solid);
 				
