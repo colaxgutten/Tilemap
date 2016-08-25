@@ -9,6 +9,22 @@ public class LoadZone {
 	private TileMap tileMap;
 	private DecorationMap decMap;
 	
+	public TileMap getTileMap() {
+		return tileMap;
+	}
+
+	public void setTileMap(TileMap tileMap) {
+		this.tileMap = tileMap;
+	}
+
+	public DecorationMap getDecMap() {
+		return decMap;
+	}
+
+	public void setDecMap(DecorationMap decMap) {
+		this.decMap = decMap;
+	}
+
 	public void loadFromFile(String fileName) {
 		File file = new File(fileName);
 		
@@ -19,7 +35,11 @@ public class LoadZone {
 			decMap = new DecorationMap();
 
 			String tileLine = br.readLine();
-			String decLine = br.readLine();
+			
+			if(tileLine == null) {
+				System.out.println("no tile line");
+				return;
+			}
 			
 			for(String tileString : tileLine.split(" ")) {
 				String[] tileArray = tileString.split(",");
@@ -31,6 +51,13 @@ public class LoadZone {
 				Tile tile = new Tile(tileImageId, solid);
 				
 				tileMap.setTile(new Point(posX, posY), tile);
+			}
+			
+			String decLine = br.readLine();
+
+			if(decLine == null) {
+				System.out.println("no decoration line");
+				return;
 			}
 			
 			for(String decString : decLine.split(" ")) {
