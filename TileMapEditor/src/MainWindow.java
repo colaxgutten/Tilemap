@@ -100,7 +100,7 @@ public class MainWindow extends Application {
 			System.out.println("file exists! yay");
 			currentLoadZone.loadFromFile("saveFile.txt");
 			currentSaveFile = "saveFile";
-		} else
+		}
 		canvasZoom = new ScrollBar();
 		canvasZoom.setMax(96);
 		canvasZoom.setMin(12);

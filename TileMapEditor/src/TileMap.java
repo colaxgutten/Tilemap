@@ -86,6 +86,10 @@ public class TileMap {
 		}
 	}
 	
+	public String toString(){
+		return mapToSaveString();
+	}
+	
 	public void loadFile(String fileName){
 		String save;
 		File file = new File(fileName);
