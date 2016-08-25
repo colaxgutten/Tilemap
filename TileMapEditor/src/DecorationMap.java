@@ -15,6 +15,10 @@ public class DecorationMap {
 		decorations.add(dec);
 	}
 	
+	public List<Decoration> getAll() {
+		return decorations;
+	}
+	
 	public String toString() {
 		String save = "";
 		for (Decoration dec : decorations){
