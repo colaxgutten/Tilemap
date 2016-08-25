@@ -139,13 +139,16 @@ public class MainWindow extends Application {
 				new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
 				new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"), new ExtensionFilter("All Files", "*.*"));
 		save.setOnAction(e -> {
-			tiles.saveFile(saveName.getText()+".txt");
+			String s = saveName.getText()+".txt";
+			tiles.saveFile(saveFolder+"\\"+s);
+			if (!savedFiles.getItems().contains(s))
+				savedFiles.getItems().add(s);
 		});
 		load.setOnAction(e -> {
 			String saveToLoad = (String) savedFiles.getSelectionModel().getSelectedItem();
-			tiles.saveFile(currentSaveFile+".txt");
-			tiles.loadFile(saveToLoad);
+			tiles.loadFile(saveFolder+"\\"+saveToLoad);
 			currentSaveFile=saveToLoad;
+			saveName.setText(saveToLoad.substring(0, saveToLoad.length()-4));
 		});
 		listImages.getItems().addAll(sideImages);
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -188,7 +191,6 @@ public class MainWindow extends Application {
 		VBox rightSideBox = new VBox();
 		saveName = new TextField();
 		saveName.setText("saveFile");
-		savedFiles.setTooltip(new Tooltip("Save to load"));
 		zoomValueLabel = new Label();
 		zoomValueLabel.setText("Rute størrelse: "+tileSize);
 		propertiesBox = new VBox();
