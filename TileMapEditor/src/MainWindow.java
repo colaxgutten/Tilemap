@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.sun.org.apache.xerces.internal.util.ShadowedSymbolTable;
@@ -63,9 +64,9 @@ public class MainWindow extends Application {
 
 	int tileSize = 48;
 
-	int rightClickselectedItem = 0;
-	int leftClickSelectedItem = 0;
-	int prevSelectedListViewItemIndex = 0;
+	String rightClickselectedItem = "";
+	String leftClickSelectedItem = "";
+	String prevSelectedListViewItemIndex = "";
 	Stage window;
 	long renderTimer;
 	ComboBox savedFiles;
@@ -75,17 +76,17 @@ public class MainWindow extends Application {
 	FileChooser filechooser;
 	Image image;
 	Image image2;
+	LoadZone currentLoadZone;
 	VBox propertiesBox;
-	List<Image> images = null;
+	HashMap<String,Image> images = null;
 	List<Image> sideImages = null;
 	ScrollBar canvasZoom;
 	Label zoomValueLabel;
 	TextField saveName;
 	ObservableList<String> saveStrings;
-	String currentSaveFile ="";
+	String currentSaveFile = "";
 	final String saveFolder = "src\\saveFiles";
-	
-	
+
 	boolean loaded = false;
 
 	public static void main(String[] args) {
@@ -94,33 +95,32 @@ public class MainWindow extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		currentLoadZone = new LoadZone();
 		File file = new File("saveFile.txt");
 		if (file.exists()) {
 			System.out.println("file exists! yay");
-			tiles = TileMap.loadFromFile(file);
-			currentSaveFile="saveFile";
-		}
-		else
+			currentLoadZone.loadFromFile("saveFile.txt");
+			currentSaveFile = "saveFile";
+		} else
 			tiles = new TileMap();
 		canvasZoom = new ScrollBar();
 		canvasZoom.setMax(96);
 		canvasZoom.setMin(12);
-		canvasZoom.valueProperty().addListener(new ChangeListener<Number>(){
+		canvasZoom.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				tileSize=newValue.intValue();	
-				tilesToBePainted=(int) Math.floor(16*48/tileSize);
+				tileSize = newValue.intValue();
+				tilesToBePainted = (int) Math.floor(16 * 48 / tileSize);
 				zoomValueLabel.setText("Rute størrelse: " + tileSize);
 			}
 		});
-		
+
 		image = new Image("images\\runite.jpg");
 		image2 = new Image("images\\illuminati.jpg");
 		ImageLoader il = new ImageLoader();
 		images = il.getImages("src\\images");
-		sideImages = new ArrayList<Image>(images);
 		saveStrings = FXCollections.observableArrayList();
-		saveStrings.addAll(loadSaveStrings(new File (saveFolder)));
+		saveStrings.addAll(loadSaveStrings(new File(saveFolder)));
 		savedFiles = new ComboBox(saveStrings);
 		loaded = true;
 		window = primaryStage;
@@ -128,29 +128,24 @@ public class MainWindow extends Application {
 		window.setWidth(mapWidth);
 		window.setHeight(mapHeight);
 		BorderPane border = new BorderPane();
-		ListView<Image> listImages = new ListView<Image>();
+		ListView<String> listImages = new ListView<String>();
 		Button save = new Button("Save");
 		Button load = new Button("Load");
 		solid = new CheckBox("Solid");
 		showSolid = new CheckBox("Show solid");
-		filechooser = new FileChooser();
-		filechooser.setTitle("Open Resource File");
-		filechooser.getExtensionFilters().addAll(new ExtensionFilter("Text Files", "*.txt"),
-				new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
-				new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"), new ExtensionFilter("All Files", "*.*"));
 		save.setOnAction(e -> {
-			String s = saveName.getText()+".txt";
-			tiles.saveFile(saveFolder+"\\"+s);
+			String s = saveName.getText() + ".txt";
+			currentLoadZone.saveToFile(saveFolder + "\\" + s);
 			if (!savedFiles.getItems().contains(s))
 				savedFiles.getItems().add(s);
 		});
 		load.setOnAction(e -> {
 			String saveToLoad = (String) savedFiles.getSelectionModel().getSelectedItem();
-			tiles.loadFile(saveFolder+"\\"+saveToLoad);
-			currentSaveFile=saveToLoad;
-			saveName.setText(saveToLoad.substring(0, saveToLoad.length()-4));
+			currentLoadZone.loadFromFile(saveFolder + "\\" + saveToLoad);
+			currentSaveFile = saveToLoad;
+			saveName.setText(saveToLoad.substring(0, saveToLoad.length() - 4));
 		});
-		listImages.getItems().addAll(sideImages);
+		listImages.getItems().addAll(images.keySet());
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listImages.setPrefWidth(100);
 		// sets value of selected item eighter with right click or left
@@ -163,22 +158,22 @@ public class MainWindow extends Application {
 			}
 		});
 		listImages.getSelectionModel().selectedItemProperty().addListener((view, oldValue, newValue) -> {
-			prevSelectedListViewItemIndex = sideImages.indexOf(newValue);
+			prevSelectedListViewItemIndex = newValue;
 			System.out.println(prevSelectedListViewItemIndex);
 		});
 		// makes the listView draw images instead of objects in text form
-		listImages.setCellFactory(listView -> new ListCell<Image>() {
+		listImages.setCellFactory(listView -> new ListCell<String>() {
 			@Override
-			protected void updateItem(Image image, boolean empty) {
+			protected void updateItem(String key, boolean empty) {
 				ImageView im = new ImageView();
 				im.setFitHeight(80);
 				im.setFitWidth(80);
-				super.updateItem(image, empty);
-				if (image == null || empty) {
+				super.updateItem(key, empty);
+				if (images.get(key) == null || empty) {
 					setText(null);
 					setGraphic(null);
 				} else {
-					im.setImage(image);
+					im.setImage(images.get(key));
 					setGraphic(im);
 				}
 			}
@@ -192,7 +187,7 @@ public class MainWindow extends Application {
 		saveName = new TextField();
 		saveName.setText("saveFile");
 		zoomValueLabel = new Label();
-		zoomValueLabel.setText("Rute størrelse: "+tileSize);
+		zoomValueLabel.setText("Rute størrelse: " + tileSize);
 		propertiesBox = new VBox();
 		propertiesBox.setSpacing(20);
 		propertiesBox.getChildren().add(solid);
@@ -201,7 +196,7 @@ public class MainWindow extends Application {
 		leftSideBox.getChildren().add(propertiesBox);
 
 		rightSideBox.setMargin(save, new Insets(20, 20, 20, 0));
-		rightSideBox.setMargin(zoomValueLabel, new Insets(0,0,20,0));
+		rightSideBox.setMargin(zoomValueLabel, new Insets(0, 0, 20, 0));
 		rightSideBox.getChildren().add(canvasZoom);
 		rightSideBox.getChildren().add(zoomValueLabel);
 		rightSideBox.getChildren().add(saveName);
@@ -245,35 +240,36 @@ public class MainWindow extends Application {
 			int tileX = (int) Math.floor(x / tileSize) + canvasXpos;
 			int tileY = (int) Math.floor(y / tileSize) + canvasYpos;
 			System.out.println(tileX + " " + tileY);
-			int i = leftClickSelectedItem;
+			String imageName = leftClickSelectedItem;
 			if (e.getButton().equals(MouseButton.SECONDARY))
-				i = rightClickselectedItem;
-			Point p = new Point(tileX,tileY);
+				imageName = rightClickselectedItem;
+			Point p = new Point(tileX, tileY);
 			Tile t = tiles.getTile(p);
-				t.setTileImageId(i);
-				if (solid.isSelected()) {
-					t.setSolid(true);
-				} else {
-					t.setSolid(false);
-				}
-				tiles.setTile(p, t);
+			t.setTileImageName(imageName);
+			if (solid.isSelected()) {
+				t.setSolid(true);
+			} else {
+				t.setSolid(false);
+			}
+			System.out.println(currentLoadZone.getTileMap().getSize());
+			currentLoadZone.getTileMap().setTile(p, t);
 
 		});
 		canvas.setOnMouseDragged(e -> {
 			int x = (int) (Math.floor(e.getX()) / tileSize) + canvasXpos;
 			int y = (int) (Math.floor(e.getY()) / tileSize) + canvasYpos;
-			Point p = new Point(x,y);
+			Point p = new Point(x, y);
 			Tile t = tiles.getTile(p);
-				if (e.getButton() == MouseButton.PRIMARY) {
-					t.setTileImageId(leftClickSelectedItem);
-				} else if (e.getButton() == MouseButton.SECONDARY) {
-					t.setTileImageId(rightClickselectedItem);
-				}
-				if (solid.isSelected())
-					t.setSolid(true);
-				else
-					t.setSolid(false);
-				tiles.setTile(p, t);
+			if (e.getButton() == MouseButton.PRIMARY) {
+				t.setTileImageName(leftClickSelectedItem);
+			} else if (e.getButton() == MouseButton.SECONDARY) {
+				t.setTileImageName(rightClickselectedItem);
+			}
+			if (solid.isSelected())
+				t.setSolid(true);
+			else
+				t.setSolid(false);
+			currentLoadZone.getTileMap().setTile(p, t);
 		});
 
 		canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -316,14 +312,17 @@ public class MainWindow extends Application {
 	private void drawTiles(GraphicsContext gc) {
 		gc.clearRect(0, 0, 768, 768);
 		Image imageById = null;
-		for (int i = canvasXpos; i < canvasXpos+tilesToBePainted; i++) {
-			for (int j = canvasYpos; j < canvasYpos+tilesToBePainted; j++) {
+		for (int i = canvasXpos; i < canvasXpos + tilesToBePainted; i++) {
+			for (int j = canvasYpos; j < canvasYpos + tilesToBePainted; j++) {
 
-				int id = tiles.getTile(new Point(i, j)).getTileImageId();
-				if (id < images.size() && id >= 0)
-					imageById = images.get(id);
+				String name = currentLoadZone.getTileMap().getTile(new Point(i, j)).getTileImageId();
+				if (images.get(name)==null){
+					imageById = images.get("illuminati.jpg");
+				}
+				else
+					imageById=images.get(name);
 				if (imageById != null) {
-					if (showSolid.isSelected() && !tiles.getTile(new Point(i, j)).isSolid()) {
+					if (showSolid.isSelected() && !currentLoadZone.getTileMap().getTile(new Point(i, j)).isSolid()) {
 						gc.setGlobalAlpha(0.2);
 					}
 					gc.drawImage(imageById, (i - canvasXpos) * tileSize, (j - canvasYpos) * tileSize, tileSize,
@@ -352,15 +351,14 @@ public class MainWindow extends Application {
 	private int getTileSize() {
 		return (int) Math.min(Math.max(12, Math.floor(mapHeight / this.tileSize)), 96);
 	}
-	
-	
-	public ArrayList<String> loadSaveStrings(final File folder){
+
+	public ArrayList<String> loadSaveStrings(final File folder) {
 		ArrayList<String> savedFileStrings = new ArrayList<String>();
-		for (final File fileEntry : folder.listFiles()){
-			if (fileEntry.isDirectory()){
+		for (final File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
 				loadSaveStrings(fileEntry);
 			} else {
-				if (fileEntry.getName().endsWith(".txt")){
+				if (fileEntry.getName().endsWith(".txt")) {
 					String name = fileEntry.getName();
 					savedFileStrings.add(name);
 				}

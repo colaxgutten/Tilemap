@@ -3,26 +3,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tile {
-	private int tileImageId;
+	private String tileImageName;
 	private int toolId=0;
 	boolean solid;
 	
 	/**
 	 * Creates a Tile with imageId and whether its solid or not
-	 * @param tileImageId
+	 * @param tileImageName
 	 * @param solid
 	 */
-	public Tile(int tileImageId, boolean solid){
-		this.tileImageId=tileImageId;
+	public Tile(String tileImageName, boolean solid){
+		this.tileImageName=tileImageName;
 		this.solid=solid;
 	}
 	
-	public void setTileImageId(int id){
-		tileImageId=id;
+	public void setTileImageName(String name){
+		tileImageName=name;
 	}
 	
-	public int getTileImageId(){
-		return tileImageId;
+	public String getTileImageId(){
+		return tileImageName;
 	}
 	
 	public boolean isSolid(){
@@ -35,7 +35,7 @@ public class Tile {
 	
 	public String toSaveString(){
 		String s ="";
-		s+=tileImageId+",";
+		s+=tileImageName+",";
 		if (solid)
 			s+="t,";
 		else
@@ -46,9 +46,9 @@ public class Tile {
 	public static Tile fromFileToTile(String savedTileString){
 		String[] split = savedTileString.split(",");
 		boolean solid =false;
-		int imgId =0;
+		String imgId ="";
 		if (split[0]!=null){
-			imgId = Integer.parseInt(split[0]);
+			imgId = split[0];
 			if (split.length>1)
 				solid = split[1].equals("t") ? true : false;
 		}
@@ -58,11 +58,11 @@ public class Tile {
 	
 	@Override
 	public String toString(){
-		return ""+tileImageId +" "+ solid;
+		return ""+tileImageName +" "+ solid;
 	}
 
 	public static Tile getBasicTile() {
-		return new Tile(0,false);
+		return new Tile("illuminati.jpg",false);
 	}
 	
 	public void onWalkOver() {}

@@ -25,6 +25,10 @@ public class TileMap {
 		return grid.get(pos);
 	}
 	
+	public int getSize(){
+		return grid.size();
+	}
+	
 	public void printTiles(){
 		System.out.println("trying to print tiles");
 		System.out.println("size of tileMap is: "+grid.size());
@@ -63,10 +67,6 @@ public class TileMap {
 		return save;
 	}
 	
-	public String toString() {
-		return mapToSaveString();
-	}
-	
 	public void saveFile(String fileName){
 		File f = new File(fileName);
 		if (!f.exists()) {
@@ -102,7 +102,7 @@ public class TileMap {
 						Boolean solid =false;
 						if (tileVariables[3].equals("f"))
 							solid=true;
-						Tile t = new Tile(Integer.parseInt(tileVariables[2]),solid);
+						Tile t = new Tile(tileVariables[2],solid);
 						tileMap.put(p, t);
 					}
 				}
