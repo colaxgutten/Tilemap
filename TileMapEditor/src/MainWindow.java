@@ -72,7 +72,6 @@ public class MainWindow extends Application {
 	ComboBox savedFiles;
 	CheckBox showSolid;
 	CheckBox solid;
-	TileMap tiles;
 	FileChooser filechooser;
 	Image image;
 	Image image2;
@@ -102,7 +101,6 @@ public class MainWindow extends Application {
 			currentLoadZone.loadFromFile("saveFile.txt");
 			currentSaveFile = "saveFile";
 		} else
-			tiles = new TileMap();
 		canvasZoom = new ScrollBar();
 		canvasZoom.setMax(96);
 		canvasZoom.setMin(12);
