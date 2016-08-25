@@ -1,10 +1,7 @@
 import java.awt.Point;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +45,7 @@ public class LoadZone {
 				String[] tileArray = tileString.split(",");
 				int posX = Integer.valueOf(tileArray[0]);
 				int posY = Integer.valueOf(tileArray[1]);
-				int tileImageId = Integer.valueOf(tileArray[2]);
+				String tileImageId = tileArray[2];
 				boolean solid = Boolean.valueOf(tileArray[3]);
 				
 				Tile tile = new Tile(tileImageId, solid);
@@ -79,32 +76,13 @@ public class LoadZone {
 	}
 
 	/**
-	 * Lager en tekst ut av tilemappen for å lagre slik:
+	 * Lager en tekst ut av tillemappen for Ã¥ lagre slik:
 	 * xpos,ypos,tileImageId,solid 
 	 * med mellomrom som skilletegn mellom hver tile som skal lagres.
 	 * @return save tekst.
 	 */
 	public void saveToFile(String fileName) {
 		File file = new File(fileName);
-
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			FileWriter fw = new FileWriter(file);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			bw.write(tileMap.toString());
-			bw.newLine();
-			bw.write(decMap.toString());
-			
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 	}
 }
