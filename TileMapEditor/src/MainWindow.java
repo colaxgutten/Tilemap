@@ -73,6 +73,8 @@ public class MainWindow extends Application {
 	CheckBox showSolid;
 	CheckBox solid;
 	FileChooser filechooser;
+	Image image;
+	Image image2;
 	LoadZone currentLoadZone;
 	VBox propertiesBox;
 	HashMap<String,Image> images = null;
@@ -83,6 +85,8 @@ public class MainWindow extends Application {
 	ObservableList<String> saveStrings;
 	String currentSaveFile = "";
 	final String saveFolder = "src\\saveFiles";
+
+	boolean loaded = false;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -108,12 +112,15 @@ public class MainWindow extends Application {
 				zoomValueLabel.setText("Rute størrelse: " + tileSize);
 			}
 		});
-		
+
+		image = new Image("images\\runite.jpg");
+		image2 = new Image("images\\illuminati.jpg");
 		ImageLoader il = new ImageLoader();
 		images = il.getImages("src\\images");
 		saveStrings = FXCollections.observableArrayList();
 		saveStrings.addAll(loadSaveStrings(new File(saveFolder)));
 		savedFiles = new ComboBox(saveStrings);
+		loaded = true;
 		window = primaryStage;
 		window.setTitle("MapEditor");
 		window.setWidth(mapWidth);
