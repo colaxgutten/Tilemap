@@ -63,6 +63,10 @@ public class TileMap {
 		return save;
 	}
 	
+	public String toString() {
+		return mapToSaveString();
+	}
+	
 	public void saveFile(String fileName){
 		File f = new File(fileName);
 		if (!f.exists()) {

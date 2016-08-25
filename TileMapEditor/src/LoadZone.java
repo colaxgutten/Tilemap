@@ -1,13 +1,16 @@
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoadZone {
-	private TileMap tileMap;
-	private DecorationMap decMap;
+	private TileMap tileMap = new TileMap();
+	private DecorationMap decMap = new DecorationMap();
 	
 	public TileMap getTileMap() {
 		return tileMap;
@@ -83,6 +86,25 @@ public class LoadZone {
 	 */
 	public void saveToFile(String fileName) {
 		File file = new File(fileName);
-		
+
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			FileWriter fw = new FileWriter(file);
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			bw.write(tileMap.toString());
+			bw.newLine();
+			bw.write(decMap.toString());
+			
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
