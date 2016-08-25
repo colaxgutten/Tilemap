@@ -58,30 +58,30 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
 	int mapHeight = 768;
 	int mapWidth = 1280;
-	int canvasXpos = 0;
-	int canvasYpos = 0;
-	int tilesToBePainted = 16;
+//	int canvasXpos = 0;
+//	int canvasYpos = 0;
+//	int tilesToBePainted = 16;
 
-	int tileSize = 48;
+//	int tileSize = 48;
 
-	String rightClickselectedItem = "";
-	String leftClickSelectedItem = "";
-	String prevSelectedListViewItemIndex = "";
+//	String rightClickselectedItem = "";
+//	String leftClickSelectedItem = "";
+//	String prevSelectedListViewItemIndex = "";
 	Stage window;
 	long renderTimer;
-	ComboBox savedFiles;
+/*	ComboBox savedFiles;
 	CheckBox showSolid;
 	CheckBox solid;
-	FileChooser filechooser;
+	FileChooser filechooser;*/
 	LoadZone currentLoadZone;
-	VBox propertiesBox;
+//	VBox propertiesBox;
 	HashMap<String,Image> images = null;
-	List<Image> sideImages = null;
+/*	List<Image> sideImages = null;
 	ScrollBar canvasZoom;
 	Label zoomValueLabel;
 	TextField saveName;
 	ObservableList<String> saveStrings;
-	String currentSaveFile = "";
+	String currentSaveFile = "";*/
 	final String saveFolder = "src\\saveFiles";
 
 	public static void main(String[] args) {
@@ -94,10 +94,9 @@ public class MainWindow extends Application {
 		File file = new File(saveFolder+"\\"+"saveFile.txt");
 		if (file.exists()) {
 			System.out.println("file exists! yay");
-			currentLoadZone.loadFromFile("saveFile.txt");
-			currentSaveFile = "saveFile";
+			currentLoadZone.loadFromFile(saveFolder+"\\"+"saveFile.txt");
 		}
-		canvasZoom = new ScrollBar();
+/*		canvasZoom = new ScrollBar();
 		canvasZoom.setMax(96);
 		canvasZoom.setMin(12);
 		canvasZoom.valueProperty().addListener(new ChangeListener<Number>() {
@@ -108,18 +107,18 @@ public class MainWindow extends Application {
 				zoomValueLabel.setText("Rute størrelse: " + tileSize);
 			}
 		});
-
+*/
 		ImageLoader il = new ImageLoader();
 		images = il.getImages("src\\images");
-		saveStrings = FXCollections.observableArrayList();
+/*		saveStrings = FXCollections.observableArrayList();
 		saveStrings.addAll(loadSaveStrings(new File(saveFolder)));
-		savedFiles = new ComboBox(saveStrings);
+		savedFiles = new ComboBox(saveStrings);*/
 		window = primaryStage;
 		window.setTitle("MapEditor");
 		window.setWidth(mapWidth);
 		window.setHeight(mapHeight);
-		BorderPane border = new BorderPane();
-		ListView<String> listImages = new ListView<String>();
+		//BorderPane border = new BorderPane();
+		/*ListView<String> listImages = new ListView<String>();
 		Button save = new Button("Save");
 		Button load = new Button("Load");
 		solid = new CheckBox("Solid");
@@ -135,8 +134,8 @@ public class MainWindow extends Application {
 			currentLoadZone.loadFromFile(saveFolder + "\\" + saveToLoad);
 			currentSaveFile = saveToLoad;
 			saveName.setText(saveToLoad.substring(0, saveToLoad.length() - 4));
-		});
-		listImages.getItems().addAll(images.keySet());
+		});*/
+/*		listImages.getItems().addAll(images.keySet());
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listImages.setPrefWidth(100);
 		// sets value of selected item eighter with right click or left
@@ -168,18 +167,18 @@ public class MainWindow extends Application {
 					setGraphic(im);
 				}
 			}
-		});
-		Canvas canvas = new Canvas();
+		});*/
+//		Canvas canvas = new Canvas();
 
-		setCanvasEvents(canvas);
+//		setCanvasEvents(canvas);
 
-		HBox leftSideBox = new HBox();
-		VBox rightSideBox = new VBox();
-		saveName = new TextField();
-		saveName.setText("saveFile");
-		zoomValueLabel = new Label();
-		zoomValueLabel.setText("Rute størrelse: " + tileSize);
-		propertiesBox = new VBox();
+//		HBox leftSideBox = new HBox();
+//		VBox rightSideBox = new VBox();
+//		saveName = new TextField();
+//		saveName.setText("saveFile");
+///		zoomValueLabel = new Label();
+//		zoomValueLabel.setText("Rute størrelse: " + tileSize);
+/*		propertiesBox = new VBox();
 		propertiesBox.setSpacing(20);
 		propertiesBox.getChildren().add(solid);
 		propertiesBox.getChildren().add(showSolid);
@@ -193,36 +192,39 @@ public class MainWindow extends Application {
 		rightSideBox.getChildren().add(saveName);
 		rightSideBox.getChildren().add(save);
 		rightSideBox.getChildren().add(load);
-		rightSideBox.getChildren().add(savedFiles);
-		border.setMargin(canvas, new Insets(0, 0, 0, 0));
-		border.setLeft(leftSideBox);
-		border.setRight(rightSideBox);
+		rightSideBox.getChildren().add(savedFiles);*/
+//		border.setMargin(canvas, new Insets(0, 0, 0, 0));
+//		border.setLeft(leftSideBox);
+//		border.setRight(rightSideBox);
 
-		border.setMargin(listImages, new Insets(0, 0, 0, 0));
-		canvas.setHeight(720);
-		canvas.setWidth(720);
-		border.setCenter(canvas);
+//		border.setMargin(listImages, new Insets(0, 0, 0, 0));
+//		canvas.setHeight(720);
+//		canvas.setWidth(720);
+//		border.setCenter(canvas);
 
-		Scene scene = new Scene(border, 1280, 1000);
-		canvas.setVisible(true);
-		window.setScene(scene);
-		window.show();
+//		Scene scene = new Scene(border, 1280, 1000);
+//		canvas.setVisible(true);
+//		window.setScene(scene);
+//		window.show();
+		
+		FXHandler handler = new FXHandler(currentLoadZone, window);
+		handler.loadLeftSide(images);
+		handler.loadRightSide(saveFolder);
+		handler.loadCanvas();
+		handler.setup();
+		
 		renderTimer = System.nanoTime();
 		new AnimationTimer() {
 
 			@Override
 			public void handle(long now) {
-				listImages.refresh();
-				drawTiles(canvas.getGraphicsContext2D());
+				handler.drawTiles();
+				
 			}
 
 		}.start();
-		for (Node nodes : getAllNodes(border)) {
-			nodes.setFocusTraversable(false);
-		}
-		canvas.setFocusTraversable(true);
 	}
-
+/*
 	private void setCanvasEvents(Canvas canvas) {
 		canvas.setOnMouseClicked(e -> {
 			canvas.requestFocus();
@@ -293,13 +295,13 @@ public class MainWindow extends Application {
 			}
 
 		});
-	}
-
+	}*/
+/*
 	/**
 	 * draw the tiles in the tilemap"tiles".
 	 * 
 	 * @param gc
-	 */
+	 *//*
 	private void drawTiles(GraphicsContext gc) {
 		gc.clearRect(0, 0, 768, 768);
 		Image imageById = null;
@@ -357,5 +359,5 @@ public class MainWindow extends Application {
 		}
 		return savedFileStrings;
 	}
-
+*/
 }

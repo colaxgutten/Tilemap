@@ -1,0 +1,328 @@
+import java.awt.Point;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+public class FXHandler {
+	private LoadZone currentLoadZone;
+	private Stage stage;
+	private Canvas canvas;
+	private HBox leftSideBox;
+	private VBox rightSideBox;
+	private Canvas center;
+
+	int tilesToBePainted = 16;
+	
+	private int canvasXpos;
+	private int canvasYpos;
+	private int tileSize = 48;
+	private String leftClickSelectedItem;
+	private String rightClickselectedItem;
+	String prevSelectedListViewItemIndex = "";
+	
+	TextField saveName;
+	ObservableList<String> saveStrings;
+	ComboBox savedFiles;
+	String currentSaveFile = "";
+	Label zoomValueLabel;
+	ScrollBar canvasZoom;
+	
+	CheckBox solid;
+	CheckBox showSolid;
+	VBox propertiesBox;
+	HashMap<String,Image> images;
+	ListView<String> listImages;
+	
+	public FXHandler(LoadZone currentLoadZone, Stage stage) {
+		this.currentLoadZone = currentLoadZone;
+		this.stage = stage;
+	}
+	
+	public void setup() {
+		BorderPane border = new BorderPane();
+
+		border.setLeft(leftSideBox);
+		border.setRight(rightSideBox);
+		
+		canvas.setHeight(720);
+		canvas.setWidth(720);
+		border.setCenter(canvas);
+		
+		Scene scene = new Scene(border, 1280, 1000);
+		canvas.setVisible(true);
+		stage.setScene(scene);
+		stage.show();
+
+		for (Node nodes : getAllNodes(border)) {
+			nodes.setFocusTraversable(false);
+		}
+		canvas.setFocusTraversable(true);
+	}
+	
+	public void loadCanvas() {
+		canvas = new Canvas();
+	}
+
+	public void loadRightSide(String saveFolder) {
+		saveStrings = FXCollections.observableArrayList();
+		saveStrings.addAll(loadSaveStrings(new File(saveFolder)));
+		savedFiles = new ComboBox(saveStrings);
+		
+		rightSideBox = new VBox();
+		
+		Button save = new Button("Save");
+		Button load = new Button("Load");
+		
+		saveName = new TextField();
+		saveName.setText("saveFile");
+		zoomValueLabel = new Label();
+		zoomValueLabel.setText("Rute størrelse: " + tileSize);
+		
+		save.setOnAction(e -> {
+			String s = saveName.getText() + ".txt";
+			currentLoadZone.saveToFile(saveFolder + "\\" + s);
+			if (!savedFiles.getItems().contains(s))
+				savedFiles.getItems().add(s);
+		});
+		load.setOnAction(e -> {
+			String saveToLoad = (String) savedFiles.getSelectionModel().getSelectedItem();
+			currentLoadZone.loadFromFile(saveFolder + "\\" + saveToLoad);
+			currentSaveFile = saveToLoad;
+			saveName.setText(saveToLoad.substring(0, saveToLoad.length() - 4));
+		});
+		canvasZoom = new ScrollBar();
+		canvasZoom.setMax(96);
+		canvasZoom.setMin(12);
+		canvasZoom.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				tileSize = newValue.intValue();
+				tilesToBePainted = (int) Math.floor(16 * 48 / tileSize);
+				zoomValueLabel.setText("Rute størrelse: " + tileSize);
+			}
+		});
+		
+
+		rightSideBox.setMargin(save, new Insets(20, 20, 20, 0));
+		rightSideBox.setMargin(zoomValueLabel, new Insets(0, 0, 20, 0));
+		rightSideBox.getChildren().add(canvasZoom);
+		rightSideBox.getChildren().add(zoomValueLabel);
+		rightSideBox.getChildren().add(saveName);
+		rightSideBox.getChildren().add(save);
+		rightSideBox.getChildren().add(load);
+		rightSideBox.getChildren().add(savedFiles);
+	}
+
+	public void loadLeftSide(HashMap<String,Image> images) {
+		leftSideBox = new HBox();
+		
+		this.images = images;
+		
+		listImages = new ListView<String>();
+		listImages.getItems().addAll(images.keySet());
+		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listImages.setPrefWidth(100);
+		// sets value of selected item eighter with right click or left
+		// click(working as left and right click key-binding)
+		listImages.setOnMouseClicked(e -> {
+			if (e.getButton() == MouseButton.PRIMARY) {
+				leftClickSelectedItem = prevSelectedListViewItemIndex;
+			} else if (e.getButton() == MouseButton.SECONDARY) {
+				rightClickselectedItem = prevSelectedListViewItemIndex;
+			}
+		});
+		listImages.getSelectionModel().selectedItemProperty().addListener((view, oldValue, newValue) -> {
+			prevSelectedListViewItemIndex = newValue;
+			System.out.println(prevSelectedListViewItemIndex);
+		});
+		// makes the listView draw images instead of objects in text form
+		listImages.setCellFactory(listView -> new ListCell<String>() {
+			@Override
+			protected void updateItem(String key, boolean empty) {
+				ImageView im = new ImageView();
+				im.setFitHeight(80);
+				im.setFitWidth(80);
+				super.updateItem(key, empty);
+				if (images.get(key) == null || empty) {
+					setText(null);
+					setGraphic(null);
+				} else {
+					im.setImage(images.get(key));
+					setGraphic(im);
+				}
+			}
+		});
+
+		solid = new CheckBox("Solid");
+		showSolid = new CheckBox("Show solid");
+		
+		propertiesBox = new VBox();
+		propertiesBox.setSpacing(20);
+		propertiesBox.getChildren().add(solid);
+		propertiesBox.getChildren().add(showSolid);
+		
+		leftSideBox.getChildren().add(listImages);
+		leftSideBox.getChildren().add(propertiesBox);
+	}
+
+	private void setCanvasEvents(Canvas canvas) {
+		canvas.setOnMouseClicked(e -> {
+			canvas.requestFocus();
+			double x = e.getX();
+			double y = e.getY();
+			int tileX = (int) Math.floor(x / tileSize) + canvasXpos;
+			int tileY = (int) Math.floor(y / tileSize) + canvasYpos;
+			System.out.println(tileX + " " + tileY);
+			String imageName = leftClickSelectedItem;
+			if (e.getButton().equals(MouseButton.SECONDARY))
+				imageName = rightClickselectedItem;
+			Point p = new Point(tileX, tileY);
+			Tile t = currentLoadZone.getTileMap().getTile(p);
+			t.setTileImageName(imageName);
+			if (solid.isSelected()) {
+				t.setSolid(true);
+			} else {
+				t.setSolid(false);
+			}
+			System.out.println(currentLoadZone.getTileMap().getSize());
+			currentLoadZone.getTileMap().setTile(p, t);
+		});
+		
+		canvas.setOnMouseDragged(e -> {
+			int x = (int) (Math.floor(e.getX()) / tileSize) + canvasXpos;
+			int y = (int) (Math.floor(e.getY()) / tileSize) + canvasYpos;
+			Point p = new Point(x, y);
+			Tile t = currentLoadZone.getTileMap().getTile(p);
+			if (e.getButton() == MouseButton.PRIMARY) {
+				t.setTileImageName(leftClickSelectedItem);
+			} else if (e.getButton() == MouseButton.SECONDARY) {
+				t.setTileImageName(rightClickselectedItem);
+			}
+			if (solid.isSelected())
+				t.setSolid(true);
+			else
+				t.setSolid(false);
+			currentLoadZone.getTileMap().setTile(p, t);
+		});
+
+		canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+
+				switch (event.getCode()) {
+				case UP:
+					canvasYpos -= 1;
+					System.out.println("Up");
+					break;
+				case RIGHT:
+					canvasXpos += 1;
+					System.out.println("Right");
+					break;
+				case DOWN:
+					canvasYpos += 1;
+					System.out.println("Down");
+					break;
+				case LEFT:
+					canvasXpos -= 1;
+					System.out.println("Left");
+					break;
+				case SPACE:
+					canvasXpos = 0;
+					canvasYpos = 0;
+					break;
+				}
+			}
+
+		});
+	}
+
+	public ArrayList<String> loadSaveStrings(final File folder) {
+		ArrayList<String> savedFileStrings = new ArrayList<String>();
+		for (final File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+				loadSaveStrings(fileEntry);
+			} else {
+				if (fileEntry.getName().endsWith(".txt")) {
+					String name = fileEntry.getName();
+					savedFileStrings.add(name);
+				}
+			}
+		}
+		return savedFileStrings;
+	}
+
+	public static ArrayList<Node> getAllNodes(Parent root) {
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		addAllDescendents(root, nodes);
+		return nodes;
+	}
+
+	private static void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
+		for (Node node : parent.getChildrenUnmodifiable()) {
+			nodes.add(node);
+			if (node instanceof Parent)
+				addAllDescendents((Parent) node, nodes);
+		}
+	}
+
+	/**
+	 * draw the tiles in the tilemap"tiles".
+	 * 
+	 * @param gc
+	 */
+	public void drawTiles() {
+		listImages.refresh();
+		
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		
+		gc.clearRect(0, 0, 768, 768);
+		Image imageById = null;
+		for (int i = canvasXpos; i < canvasXpos + tilesToBePainted; i++) {
+			for (int j = canvasYpos; j < canvasYpos + tilesToBePainted; j++) {
+
+				String name = currentLoadZone.getTileMap().getTile(new Point(i, j)).getTileImageId();
+				if (images.get(name)==null){
+					imageById = images.get("illuminati.jpg");
+				}
+				else
+					imageById=images.get(name);
+				if (imageById != null) {
+					if (showSolid.isSelected() && !currentLoadZone.getTileMap().getTile(new Point(i, j)).isSolid()) {
+						gc.setGlobalAlpha(0.2);
+					}
+					gc.drawImage(imageById, (i - canvasXpos) * tileSize, (j - canvasYpos) * tileSize, tileSize,
+							tileSize);
+					gc.setGlobalAlpha(1);
+				}
+			}
+		}
+
+	}
+	
+	public Canvas getCanvas() {
+		return canvas;
+	}
+	 
+	public boolean isSolid() {
+		return false;
+	}
+}
