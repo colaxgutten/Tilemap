@@ -213,11 +213,16 @@ public class FXHandler {
 				im.setFitHeight(80);
 				im.setFitWidth(80);
 				super.updateItem(key, empty);
-				if (tiles.get(key) == null || empty) {
+				if ((tiles.get(key) == null && decorations.get(key) == null) || empty) {
 					setText(null);
 					setGraphic(null);
 				} else {
+					String selection = (String)imageSelection.getValue();
+					if(selection.equals("tiles")){
 					im.setImage(tiles.get(key));
+					} else if (selection.equals("decorations")){
+						im.setImage(decorations.get(key));
+					}
 					setGraphic(im);
 				}
 			}
