@@ -44,7 +44,6 @@ public class FXHandler {
 	TextField searchBarForTiles = new TextField();
 	ObservableList<String> saveStrings;
 	ObservableList<String> searchStrings;
-	ObservableList<String> imageStringsUnedited;
 	ComboBox savedFiles;
 	String currentSaveFile = "";
 	Label zoomValueLabel;
@@ -143,14 +142,12 @@ public class FXHandler {
 		leftContainer = new VBox();
 		searchBarForTiles = new TextField();
 		searchStrings = FXCollections.observableArrayList();
-		imageStringsUnedited = FXCollections.observableArrayList();
 		
 		
 		this.images = images;
 		
 		listImages = new ListView<String>();
 		listImages.getItems().addAll(images.keySet());
-		imageStringsUnedited.addAll(images.keySet());
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listImages.setPrefWidth(100);
 		searchBarForTiles.setOnAction(e -> {
