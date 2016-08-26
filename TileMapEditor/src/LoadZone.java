@@ -32,9 +32,9 @@ public class LoadZone {
 		this.decMap = decMap;
 	}
 	
-	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> images) {
-		tileMap.draw(canvas, pos, tileSize, showSolid, images);
-		decMap.draw(canvas, pos, tileSize, images);
+	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> tiles, HashMap<String, Image> decorations) {
+		tileMap.draw(canvas, pos, tileSize, showSolid, tiles);
+		decMap.draw(canvas, pos, tileSize, decorations);
 	}
 
 	public void loadFromFile(String fileName) {

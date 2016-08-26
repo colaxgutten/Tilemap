@@ -363,7 +363,7 @@ public class FXHandler {
 		
 		gc.clearRect(0, 0, 768, 768);
 		
-		currentLoadZone.draw(canvas, new Point(canvasXpos, canvasYpos), tileSize, showSolid.isSelected(), tiles);
+		currentLoadZone.draw(canvas, new Point(canvasXpos, canvasYpos), tileSize, showSolid.isSelected(), tiles, decorations);
 	}
 	
 	public Canvas getCanvas() {
