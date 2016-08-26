@@ -158,6 +158,9 @@ public class FXHandler {
 			String s = tf.getText();
 			if (s.length()>0){
 				searchStrings.clear();
+				copyOfStrings(saveStringsUnedited,saveStrings);
+				listImages.getItems().clear();
+				listImages.getItems().addAll(saveStrings);
 			for (String search: listImages.getItems()){
 				if (search.contains(s)){
 					searchStrings.add(search);
@@ -165,7 +168,7 @@ public class FXHandler {
 			}
 			listImages.getItems().clear();
 			listImages.getItems().addAll(searchStrings);
-			copyOfStrings(saveStringsUnedited,saveStrings);
+
 			}
 			else{
 				listImages.getItems().clear();
