@@ -46,8 +46,6 @@ public class TileMap {
 	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> images) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
-		System.out.println(getTile(new Point(0, 0)).getTileImageId());
-		
 		for(int i = pos.x; i < canvas.getWidth() / tileSize; i++) {
 			for(int j = pos.y; j < canvas.getHeight() / tileSize; j++) {
 				Image image;
