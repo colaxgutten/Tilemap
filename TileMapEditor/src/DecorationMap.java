@@ -25,14 +25,25 @@ public class DecorationMap {
 	
 	public void draw(Canvas canvas, Point pos, int tileSize, HashMap<String,Image> images) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		
+		Collections.sort(decorations, new Comparator<Decoration>() {
+			@Override
+			public int compare(Decoration o1, Decoration o2) {
+				if (o1.getyPos()<o2.getyPos())
+					return -1;
+				if (o1.getyPos()>o2.getyPos())
+					return 1;
+				return 0;
+			}
+		});
 		for(Decoration dec : decorations) {
 			Image image = images.get(dec.getImageName());
-			double drawPosX = (dec.getxPos() - pos.x) * tileSize - image.getWidth()/2 + tileSize/2;
-			double drawPosY = (dec.getyPos() - pos.y) * tileSize - image.getHeight() + tileSize;
-			
 			if(image != null) {
-				gc.drawImage(image, drawPosX, drawPosY, image.getWidth(), image.getHeight());
+			double scalevalue= tileSize/48.0;
+			double drawPosX = (dec.getxPos() - pos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
+			double drawPosY = (dec.getyPos() - pos.y) * tileSize - image.getHeight()*scalevalue + tileSize;
+			
+			
+				gc.drawImage(image, drawPosX, drawPosY, image.getWidth()*scalevalue, image.getHeight()*scalevalue);
 			}
 		}
 	}

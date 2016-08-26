@@ -259,9 +259,12 @@ public class FXHandler {
 			int tileX = (int) Math.floor(x / tileSize) + canvasXpos;
 			int tileY = (int) Math.floor(y / tileSize) + canvasYpos;
 			System.out.println(tileX + " " + tileY);
+			String selection = (String)imageSelection.getValue();
+			
 			String imageName = leftClickSelectedItem;
 			if (e.getButton().equals(MouseButton.SECONDARY))
 				imageName = rightClickselectedItem;
+			if (selection.equals("tiles")){
 			Point p = new Point(tileX, tileY);
 			Tile t = currentLoadZone.getTileMap().getTile(p);
 			t.setTileImageName(imageName);
@@ -272,23 +275,38 @@ public class FXHandler {
 			}
 			System.out.println(currentLoadZone.getTileMap().getSize());
 			currentLoadZone.getTileMap().setTile(p, t);
+			} else if (selection.equals("decorations")){
+				if (decorations.containsKey(imageName)){
+				currentLoadZone.getDecMap().add(new Decoration(tileX,tileY,imageName));
+				}
+			}
 		});
 		
 		canvas.setOnMouseDragged(e -> {
 			int x = (int) (Math.floor(e.getX()) / tileSize) + canvasXpos;
 			int y = (int) (Math.floor(e.getY()) / tileSize) + canvasYpos;
+			String imageName = "";
+			
+			if (e.getButton() == MouseButton.PRIMARY) {	
+				imageName=leftClickSelectedItem;
+			} else if (e.getButton() == MouseButton.SECONDARY) {	
+				imageName=rightClickselectedItem;
+			}
+			String selection = (String) imageSelection.getValue();
+			if (selection.equals("tiles")){
 			Point p = new Point(x, y);
 			Tile t = currentLoadZone.getTileMap().getTile(p);
-			if (e.getButton() == MouseButton.PRIMARY) {
-				t.setTileImageName(leftClickSelectedItem);
-			} else if (e.getButton() == MouseButton.SECONDARY) {
-				t.setTileImageName(rightClickselectedItem);
-			}
+			t.setTileImageName(imageName);
 			if (solid.isSelected())
 				t.setSolid(true);
 			else
 				t.setSolid(false);
 			currentLoadZone.getTileMap().setTile(p, t);
+			} else if (selection.equals("decorations")){
+				if (decorations.containsKey(imageName)){
+					currentLoadZone.getDecMap().add(new Decoration(x,y,imageName));
+				}
+			}
 		});
 
 		canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
