@@ -28,6 +28,7 @@ public class FXHandler {
 	private Canvas canvas;
 	private HBox leftSideBox;
 	private VBox rightSideBox;
+	private VBox leftContainer;
 	private Canvas center;
 
 	int tilesToBePainted = 16;
@@ -40,6 +41,7 @@ public class FXHandler {
 	String prevSelectedListViewItemIndex = "";
 	
 	TextField saveName;
+	TextField searchBarForTiles = new TextField();
 	ObservableList<String> saveStrings;
 	ComboBox savedFiles;
 	String currentSaveFile = "";
@@ -113,6 +115,7 @@ public class FXHandler {
 		canvasZoom = new ScrollBar();
 		canvasZoom.setMax(96);
 		canvasZoom.setMin(12);
+		canvasZoom.setValue(48);
 		canvasZoom.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -135,6 +138,9 @@ public class FXHandler {
 
 	public void loadLeftSide(HashMap<String,Image> images) {
 		leftSideBox = new HBox();
+		leftContainer = new VBox();
+		searchBarForTiles = new TextField();
+		
 		
 		this.images = images;
 		
@@ -142,6 +148,11 @@ public class FXHandler {
 		listImages.getItems().addAll(images.keySet());
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listImages.setPrefWidth(100);
+		searchBarForTiles.setOnAction(e -> {
+			TextField tf = (TextField)e.getSource();
+			String s = tf.getText();
+			System.out.println(s);
+		});
 		// sets value of selected item eighter with right click or left
 		// click(working as left and right click key-binding)
 		listImages.setOnMouseClicked(e -> {
