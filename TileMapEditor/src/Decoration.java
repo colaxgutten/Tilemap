@@ -1,3 +1,5 @@
+import java.util.Locale;
+
 public class Decoration {
 	private String imageName;
 	private double xPos;
@@ -35,6 +37,6 @@ public class Decoration {
 
 	@Override
 	public String toString() {
-		return String.format("%.1f,%.1f,%s", xPos, yPos, imageName);
+		return String.format(Locale.US, "%.1f,%.1f,%s", xPos, yPos, imageName);
 	}
 }
