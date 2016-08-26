@@ -10,18 +10,18 @@ import sun.applet.Main;
 
 public class ImageLoader {
 	boolean loaded = false;
-	private HashMap<String,Image> images = new HashMap<String,Image>();
+	private HashMap<String,Image> tiles = new HashMap<String,Image>();
 	
-	public void loadFolderImages(String folderPath){
-		final File folder = new File("src\\images");
-		loadImages(folder);
+	public void loadFolderTiles(String folderPath){
+		final File folder = new File("src\\tiles");
+		loadTiles(folder);
 	}
 
-	public void loadImages(final File folder){
+	public void loadTiles(final File folder){
 		System.out.println(folder.exists());
 		for (final File fileEntry : folder.listFiles()){
 			if (fileEntry.isDirectory()){
-				loadImages(fileEntry);
+				loadTiles(fileEntry);
 			} else {
 				String name = "";
 				if (fileEntry.getName().endsWith("jpg")){
@@ -33,15 +33,15 @@ public class ImageLoader {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					images.put(name,image);
+					tiles.put(name,image);
 				}
 			}
 		}
 		loaded=true;
 	}
-	public HashMap<String,Image> getImages(String folderPath){
+	public HashMap<String,Image> getTiles(String folderPath){
 		if (!loaded)
-		loadFolderImages(folderPath);
-		return images;
+		loadFolderTiles(folderPath);
+		return tiles;
 	}
 }

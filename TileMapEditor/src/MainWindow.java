@@ -30,7 +30,7 @@ public class MainWindow extends Application {
 		}
 
 		ImageLoader il = new ImageLoader();
-		images = il.getImages("src\\images");
+		images = il.getTiles("src\\tiles");
 
 		window = primaryStage;
 		window.setTitle("MapEditor");
