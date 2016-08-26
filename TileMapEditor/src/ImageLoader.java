@@ -26,7 +26,7 @@ public class ImageLoader {
 				loadTiles(fileEntry);
 			} else {
 				String name = "";
-				if (fileEntry.getName().endsWith("jpg")){
+				if (fileEntry.getName().endsWith("jpg") || fileEntry.getName().endsWith("png")){ 
 					name=fileEntry.getName();
 					Image image = null;
 					try {
@@ -50,7 +50,7 @@ public class ImageLoader {
 				loadTiles(fileEntry);
 			} else {
 				String name = "";
-				if (fileEntry.getName().endsWith("jpg")){
+				if (fileEntry.getName().endsWith("jpg") || fileEntry.getName().endsWith("png")){
 					name=fileEntry.getName();
 					Image image = null;
 					try {
@@ -70,9 +70,7 @@ public class ImageLoader {
 	}
 	
 	
-	public HashMap<String,Image> getTiles(String folderPath){
-		if (!loaded)
-		loadFolderTiles(folderPath);
+	public HashMap<String,Image> getTiles(){
 		return tiles;
 	}
 }

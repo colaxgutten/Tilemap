@@ -45,6 +45,7 @@ public class FXHandler {
 	ObservableList<String> saveStrings;
 	ObservableList<String> searchStrings;
 	ComboBox savedFiles;
+	ComboBox imageSelection;
 	String currentSaveFile = "";
 	Label zoomValueLabel;
 	ScrollBar canvasZoom;
@@ -52,7 +53,8 @@ public class FXHandler {
 	CheckBox solid;
 	CheckBox showSolid;
 	VBox propertiesBox;
-	HashMap<String,Image> images;
+	HashMap<String,Image> tiles;
+	HashMap<String,Image> decorations;
 	ListView<String> listImages;
 	
 	public FXHandler(LoadZone currentLoadZone, Stage stage) {
@@ -137,17 +139,36 @@ public class FXHandler {
 		rightSideBox.getChildren().add(savedFiles);
 	}
 
-	public void loadLeftSide(HashMap<String,Image> images) {
+	public void loadLeftSide(HashMap<String,Image> tiles,HashMap<String,Image> decorations) {
 		leftSideBox = new HBox();
 		leftContainer = new VBox();
+		imageSelection = new ComboBox();
+		imageSelection.getItems().add("tiles");
+		imageSelection.getItems().add("decorations");
+		imageSelection.getSelectionModel().select(0);
+		
+		this.tiles = tiles;
+		this.decorations = decorations;
+		
+		imageSelection.valueProperty().addListener(new ChangeListener<String>() {
+	        @Override public void changed(ObservableValue ov, String t, String t1) {
+	          if (t1.equals("tiles")){
+	        	  listImages.getItems().clear();
+	        	  listImages.getItems().addAll(tiles.keySet());
+	          }else if (t1.equals("decorations")){
+	        	  listImages.getItems().clear();
+	        	  listImages.getItems().addAll(decorations.keySet());
+	          }
+	        }    
+	    });
 		searchBarForTiles = new TextField();
 		searchStrings = FXCollections.observableArrayList();
 		
 		
-		this.images = images;
+		
 		
 		listImages = new ListView<String>();
-		listImages.getItems().addAll(images.keySet());
+		listImages.getItems().addAll(tiles.keySet());
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listImages.setPrefWidth(100);
 		searchBarForTiles.setOnAction(e -> {
@@ -156,7 +177,7 @@ public class FXHandler {
 			if (s.length()>0){
 				searchStrings.clear();
 				listImages.getItems().clear();
-				listImages.getItems().addAll(images.keySet());
+				listImages.getItems().addAll(tiles.keySet());
 			for (String search: listImages.getItems()){
 				if (search.contains(s)){
 					searchStrings.add(search);
@@ -168,7 +189,7 @@ public class FXHandler {
 			}
 			else{
 				listImages.getItems().clear();
-				listImages.getItems().addAll(images.keySet());
+				listImages.getItems().addAll(tiles.keySet());
 			}
 		});
 		// sets value of selected item eighter with right click or left
@@ -192,11 +213,11 @@ public class FXHandler {
 				im.setFitHeight(80);
 				im.setFitWidth(80);
 				super.updateItem(key, empty);
-				if (images.get(key) == null || empty) {
+				if (tiles.get(key) == null || empty) {
 					setText(null);
 					setGraphic(null);
 				} else {
-					im.setImage(images.get(key));
+					im.setImage(tiles.get(key));
 					setGraphic(im);
 				}
 			}
@@ -213,6 +234,7 @@ public class FXHandler {
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
 		leftContainer.getChildren().add(searchBarForTiles);
+		leftContainer.getChildren().add(imageSelection);
 		leftContainer.getChildren().add(leftSideBox);
 	}
 
@@ -336,7 +358,7 @@ public class FXHandler {
 		
 		gc.clearRect(0, 0, 768, 768);
 		
-		currentLoadZone.draw(canvas, new Point(canvasXpos, canvasYpos), tileSize, showSolid.isSelected(), images);
+		currentLoadZone.draw(canvas, new Point(canvasXpos, canvasYpos), tileSize, showSolid.isSelected(), tiles);
 	}
 	
 	public Canvas getCanvas() {

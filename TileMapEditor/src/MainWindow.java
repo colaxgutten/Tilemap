@@ -13,8 +13,11 @@ public class MainWindow extends Application {
 	Stage window;
 	long renderTimer;
 	LoadZone currentLoadZone;
-	HashMap<String,Image> images = null;
+	HashMap<String,Image> tiles = null;
+	HashMap<String,Image> decorations = null;
 	final String saveFolder = "src\\saveFiles";
+	final String decorationFolder = "src\\decorations";
+	final String tileFolder = "src\\tiles";
 
 	public static void main(String[] args) {
 		launch(args);
@@ -30,7 +33,10 @@ public class MainWindow extends Application {
 		}
 
 		ImageLoader il = new ImageLoader();
-		images = il.getTiles("src\\tiles");
+		il.loadFolderTiles(tileFolder);
+		il.loadDecorations(decorationFolder);
+		tiles = il.getTiles();
+		decorations = il.getDecorations();
 
 		window = primaryStage;
 		window.setTitle("MapEditor");
@@ -38,7 +44,7 @@ public class MainWindow extends Application {
 		window.setHeight(mapHeight);
 		
 		FXHandler handler = new FXHandler(currentLoadZone, window);
-		handler.loadLeftSide(images);
+		handler.loadLeftSide(tiles,decorations);
 		handler.loadRightSide(saveFolder);
 		handler.loadCanvas();
 		handler.setup();
