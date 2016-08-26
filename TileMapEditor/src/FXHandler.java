@@ -315,27 +315,8 @@ public class FXHandler {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
 		gc.clearRect(0, 0, 768, 768);
-		Image imageById = null;
-		for (int i = canvasXpos; i < canvasXpos + tilesToBePainted; i++) {
-			for (int j = canvasYpos; j < canvasYpos + tilesToBePainted; j++) {
-
-				String name = currentLoadZone.getTileMap().getTile(new Point(i, j)).getTileImageId();
-				if (images.get(name)==null){
-					imageById = images.get("illuminati.jpg");
-				}
-				else
-					imageById=images.get(name);
-				if (imageById != null) {
-					if (showSolid.isSelected() && !currentLoadZone.getTileMap().getTile(new Point(i, j)).isSolid()) {
-						gc.setGlobalAlpha(0.2);
-					}
-					gc.drawImage(imageById, (i - canvasXpos) * tileSize, (j - canvasYpos) * tileSize, tileSize,
-							tileSize);
-					gc.setGlobalAlpha(1);
-				}
-			}
-		}
-
+		
+		currentLoadZone.draw(canvas, new Point(canvasXpos, canvasYpos), tileSize, showSolid.isSelected(), images);
 	}
 	
 	public Canvas getCanvas() {
