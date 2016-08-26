@@ -9,6 +9,30 @@ public class Decoration {
 		this.imageName = imageName;
 	}
 	
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public double getxPos() {
+		return xPos;
+	}
+
+	public void setxPos(double xPos) {
+		this.xPos = xPos;
+	}
+
+	public double getyPos() {
+		return yPos;
+	}
+
+	public void setyPos(double yPos) {
+		this.yPos = yPos;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%.1f,%.1f,%s", xPos, yPos, imageName);

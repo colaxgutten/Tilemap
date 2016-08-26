@@ -24,7 +24,14 @@ public class DecorationMap {
 	}
 	
 	public void draw(Canvas canvas, Point pos, int tileSize, HashMap<String,Image> images) {
+		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
+		for(Decoration dec : decorations) {
+			Image image = images.get(dec.getImageName());
+			if(image != null) {
+				gc.drawImage(image, pos.x + dec.getxPos() * tileSize, pos.y + dec.getyPos() * tileSize, tileSize, tileSize);
+			}
+		}
 	}
 	
 	public String toString() {
