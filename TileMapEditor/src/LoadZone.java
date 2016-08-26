@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
 public class LoadZone {
 	private TileMap tileMap = new TileMap();
 	private DecorationMap decMap = new DecorationMap();
@@ -26,6 +30,11 @@ public class LoadZone {
 
 	public void setDecMap(DecorationMap decMap) {
 		this.decMap = decMap;
+	}
+	
+	public void draw(Canvas canvas, Point pos, int tileSize, HashMap<String,Image> images) {
+		tileMap.draw(canvas, pos, tileSize, images);
+		decMap.draw(canvas, pos, tileSize, images);
 	}
 
 	public void loadFromFile(String fileName) {

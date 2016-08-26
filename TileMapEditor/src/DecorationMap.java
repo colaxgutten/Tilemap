@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
 public class DecorationMap {
 	private List<Decoration> decorations = new ArrayList<>();
 	
@@ -17,6 +21,10 @@ public class DecorationMap {
 	
 	public List<Decoration> getAll() {
 		return decorations;
+	}
+	
+	public void draw(Canvas canvas, Point pos, int tileSize, HashMap<String,Image> images) {
+		
 	}
 	
 	public String toString() {
