@@ -43,6 +43,7 @@ public class FXHandler {
 	TextField saveName;
 	TextField searchBarForTiles = new TextField();
 	ObservableList<String> saveStrings;
+	ObservableList<String> searchStrings;
 	ComboBox savedFiles;
 	String currentSaveFile = "";
 	Label zoomValueLabel;
@@ -62,7 +63,7 @@ public class FXHandler {
 	public void setup() {
 		BorderPane border = new BorderPane();
 
-		border.setLeft(leftSideBox);
+		border.setLeft(leftContainer);
 		border.setRight(rightSideBox);
 		
 		canvas.setHeight(720);
@@ -151,7 +152,12 @@ public class FXHandler {
 		searchBarForTiles.setOnAction(e -> {
 			TextField tf = (TextField)e.getSource();
 			String s = tf.getText();
-			System.out.println(s);
+			saveStrings.clear();
+			for (String search: listImages.getItems()){
+				if (search.contains(s)){
+					saveStrings.add(search);
+				}
+			}
 		});
 		// sets value of selected item eighter with right click or left
 		// click(working as left and right click key-binding)
@@ -194,6 +200,8 @@ public class FXHandler {
 		
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
+		leftContainer.getChildren().add(searchBarForTiles);
+		leftContainer.getChildren().add(leftSideBox);
 	}
 
 	private void setCanvasEvents(Canvas canvas) {
