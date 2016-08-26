@@ -44,6 +44,7 @@ public class FXHandler {
 	TextField searchBarForTiles = new TextField();
 	ObservableList<String> saveStrings;
 	ObservableList<String> searchStrings;
+	ObservableList<String> saveStringsUnedited;
 	ComboBox savedFiles;
 	String currentSaveFile = "";
 	Label zoomValueLabel;
@@ -141,22 +142,34 @@ public class FXHandler {
 		leftSideBox = new HBox();
 		leftContainer = new VBox();
 		searchBarForTiles = new TextField();
+		searchStrings = FXCollections.observableArrayList();
+		saveStringsUnedited = FXCollections.observableArrayList();
 		
 		
 		this.images = images;
 		
 		listImages = new ListView<String>();
 		listImages.getItems().addAll(images.keySet());
+		saveStringsUnedited.addAll(images.keySet());
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listImages.setPrefWidth(100);
 		searchBarForTiles.setOnAction(e -> {
 			TextField tf = (TextField)e.getSource();
 			String s = tf.getText();
-			saveStrings.clear();
+			if (s.length()>0){
+				searchStrings.clear();
 			for (String search: listImages.getItems()){
 				if (search.contains(s)){
-					saveStrings.add(search);
+					searchStrings.add(search);
 				}
+			}
+			listImages.getItems().clear();
+			listImages.getItems().addAll(searchStrings);
+			copyOfStrings(saveStringsUnedited,saveStrings);
+			}
+			else{
+				listImages.getItems().clear();
+				listImages.getItems().addAll(saveStrings);
 			}
 		});
 		// sets value of selected item eighter with right click or left
@@ -202,6 +215,14 @@ public class FXHandler {
 		leftSideBox.getChildren().add(propertiesBox);
 		leftContainer.getChildren().add(searchBarForTiles);
 		leftContainer.getChildren().add(leftSideBox);
+	}
+
+	private void copyOfStrings(ObservableList<String> stringsToCopy, ObservableList<String> saveStrings2) {
+		saveStrings2.clear();
+		for (String s : stringsToCopy){
+			if (!saveStrings2.contains(s))
+				saveStrings2.add(s);
+		}
 	}
 
 	private void setCanvasEvents(Canvas canvas) {
