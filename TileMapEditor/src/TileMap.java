@@ -46,8 +46,8 @@ public class TileMap {
 	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> images) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
-		for(int i = pos.x; i < canvas.getWidth() / tileSize; i++) {
-			for(int j = pos.y; j < canvas.getHeight() / tileSize; j++) {
+		for(int i = pos.x; i < canvas.getWidth() / tileSize + pos.x; i++) {
+			for(int j = pos.y; j < canvas.getHeight() / tileSize + pos.y; j++) {
 				Image image;
 				String imageName = getTile(new Point(i, j)).getTileImageId();
 				
@@ -60,7 +60,7 @@ public class TileMap {
 				if (showSolid && !getTile(new Point(i, j)).isSolid()) {
 					gc.setGlobalAlpha(0.2);
 				}
-				gc.drawImage(image, i * tileSize, j * tileSize, tileSize, tileSize);
+				gc.drawImage(image, (i - pos.x) * tileSize, (j - pos.y) * tileSize, tileSize, tileSize);
 				gc.setGlobalAlpha(1);
 			}
 		}
