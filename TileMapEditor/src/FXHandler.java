@@ -80,6 +80,7 @@ public class FXHandler {
 	
 	public void loadCanvas() {
 		canvas = new Canvas();
+		setCanvasEvents(canvas);
 	}
 
 	public void loadRightSide(String saveFolder) {
