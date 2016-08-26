@@ -28,8 +28,11 @@ public class DecorationMap {
 		
 		for(Decoration dec : decorations) {
 			Image image = images.get(dec.getImageName());
+			double drawPosX = (dec.getxPos() - pos.x) * tileSize - image.getWidth()/2 + tileSize/2;
+			double drawPosY = (dec.getyPos() - pos.y) * tileSize - image.getHeight() + tileSize;
+			
 			if(image != null) {
-				gc.drawImage(image, pos.x + dec.getxPos() * tileSize, pos.y + dec.getyPos() * tileSize, tileSize, tileSize);
+				gc.drawImage(image, drawPosX, drawPosY, image.getWidth(), image.getHeight());
 			}
 		}
 	}
