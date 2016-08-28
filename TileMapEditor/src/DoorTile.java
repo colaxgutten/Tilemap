@@ -1,10 +1,9 @@
 
 public class DoorTile extends Tile {
-	String[] params;
+	boolean isOpen;
 	
-	public DoorTile(String[] params, String imageName) {
-		super(imageName, true);
-		this.params = params;
+	public DoorTile(String[] params, String imageName, boolean isSolid) {
+		super(params, imageName, true);
 	}
 	
 	@Override

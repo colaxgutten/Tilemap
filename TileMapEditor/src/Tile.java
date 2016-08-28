@@ -4,15 +4,22 @@ import java.util.List;
 
 public class Tile {
 	private String tileImageName;
+	private String[] params;
 	private int toolId=0;
 	boolean solid;
+	
+	public Tile(String tileImageName, boolean solid) {
+		this.tileImageName=tileImageName;
+		this.solid=solid;
+	}
 	
 	/**
 	 * Creates a Tile with imageId and whether its solid or not
 	 * @param tileImageName
 	 * @param solid
 	 */
-	public Tile(String tileImageName, boolean solid){
+	public Tile(String[] params, String tileImageName, boolean solid){
+		this.params = params;
 		this.tileImageName=tileImageName;
 		this.solid=solid;
 	}
@@ -54,6 +61,16 @@ public class Tile {
 		}
 		Tile tile = new Tile(imgId,solid);
 		return tile;
+	}
+	
+	public static Tile getTile(String type, String[] params, String imageName, boolean solid) {
+		switch(type) {
+		case "door":
+			return new DoorTile(params, imageName, solid);
+		//case "chest":
+		default:
+			return new Tile(params, imageName, solid);
+		}
 	}
 	
 	@Override
