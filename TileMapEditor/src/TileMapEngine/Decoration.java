@@ -1,3 +1,4 @@
+package TileMapEngine;
 import java.util.Locale;
 
 public class Decoration {

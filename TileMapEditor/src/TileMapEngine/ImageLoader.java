@@ -1,3 +1,4 @@
+package TileMapEngine;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class ImageLoader {
 	
 	
 	public void loadFolderTiles(String folderPath){
-		final File folder = new File("src\\tiles");
+		final File folder = new File("images\\tileImages");
 		loadTiles(folder);
 	}
 

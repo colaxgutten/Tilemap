@@ -1,8 +1,10 @@
+package TileMapEngine;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import Tiles.Tile;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -57,6 +59,7 @@ public class FXHandler {
 	HashMap<String,Image> tiles;
 	HashMap<String,Image> decorations;
 	ListView<String> listImages;
+	Label cordinates;
 	
 	public FXHandler(LoadZone currentLoadZone, Stage stage) {
 		this.currentLoadZone = currentLoadZone;
@@ -93,6 +96,7 @@ public class FXHandler {
 		saveStrings = FXCollections.observableArrayList();
 		saveStrings.addAll(loadSaveStrings(new File(saveFolder)));
 		savedFiles = new ComboBox(saveStrings);
+		cordinates = new Label();
 		
 		rightSideBox = new VBox();
 		
@@ -138,6 +142,7 @@ public class FXHandler {
 		rightSideBox.getChildren().add(save);
 		rightSideBox.getChildren().add(load);
 		rightSideBox.getChildren().add(savedFiles);
+		rightSideBox.getChildren().add(cordinates);
 	}
 
 	public void loadLeftSide(HashMap<String,Image> tiles,HashMap<String,Image> decorations) {
@@ -255,6 +260,13 @@ public class FXHandler {
 	}
 
 	private void setCanvasEvents(Canvas canvas) {
+		canvas.setOnMouseMoved(e -> {
+			int x = (int) (Math.floor(e.getX()) / tileSize) + canvasXpos;
+			int y = (int) (Math.floor(e.getY()) / tileSize) + canvasYpos;
+			String tilePos = x +","+y;
+			cordinates.setText(tilePos);
+		});
+		
 		canvas.setOnMouseClicked(e -> {
 			canvas.requestFocus();
 			

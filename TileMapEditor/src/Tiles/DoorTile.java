@@ -1,3 +1,5 @@
+package Tiles;
+import TileMapEngine.Player;
 
 public class DoorTile extends Tile {
 	boolean isOpen;

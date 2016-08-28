@@ -1,3 +1,4 @@
+package TileMapEngine;
 import java.io.File;
 import java.util.HashMap;
 
@@ -16,7 +17,7 @@ public class MainWindow extends Application {
 	HashMap<String,Image> tiles = null;
 	HashMap<String,Image> decorations = null;
 	final String saveFolder = "src\\saveFiles";
-	final String decorationFolder = "src\\decorations";
+	final String decorationFolder = "images\\decorations";
 	final String tileFolder = "src\\tiles";
 
 	public static void main(String[] args) {
