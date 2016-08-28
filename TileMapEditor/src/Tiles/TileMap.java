@@ -11,14 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import TileMapEngine.Decoration;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class TileMap {
 	public static final String DEFAULT_TILE = "illuminati.jpg";
 	
 	private Map<Point, Tile> grid = new HashMap<>();
+	private Point selected;
 
 	public void setTile(Point pos, Tile tile){
 		grid.put(pos, tile);
@@ -63,6 +66,12 @@ public class TileMap {
 				}
 				gc.drawImage(image, (i - pos.x) * tileSize, (j - pos.y) * tileSize, tileSize, tileSize);
 				gc.setGlobalAlpha(1);
+				
+				if(selected != null && 	selected.equals(new Point(i, j))) {
+					gc.setLineWidth(2);
+					gc.setStroke(Color.BLUE);
+					gc.strokeRect((i - pos.x) * tileSize, (j - pos.y) * tileSize, tileSize, tileSize);
+				}
 			}
 		}
 
@@ -98,6 +107,18 @@ public class TileMap {
 		}
 
 		return tileMap;
+	}
+	
+	public void selectTileAt(int x, int y) {
+		selected = new Point(x, y);
+	}
+	
+	public Tile getSelected() {
+		return getTile(selected);
+	}
+	
+	public void removeSelection() {
+		selected = null;
 	}
 	
 	/**

@@ -297,6 +297,8 @@ public class FXHandler {
 			}
 			System.out.println(currentLoadZone.getTileMap().getSize());
 			currentLoadZone.getTileMap().setTile(p, t);
+			currentLoadZone.getTileMap().removeSelection();
+			currentLoadZone.getTileMap().selectTileAt((int)p.getX(), (int)p.getY());
 			} else if (selection.equals("decorations")){
 				if (decorations.containsKey(imageName)){
 				currentLoadZone.getDecMap().add(new Decoration(tileX,tileY,imageName));
