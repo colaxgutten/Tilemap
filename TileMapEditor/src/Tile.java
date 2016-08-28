@@ -65,12 +65,16 @@ public class Tile {
 	
 	public static Tile getTile(String type, String[] params, String imageName, boolean solid) {
 		switch(type) {
-		case "door":
+		case "doorTile":
 			return new DoorTile(params, imageName, solid);
 		//case "chest":
 		default:
 			return new Tile(params, imageName, solid);
 		}
+	}
+	
+	public String getParamString() {
+		return params != null ? String.join(";", params) : "";
 	}
 	
 	@Override

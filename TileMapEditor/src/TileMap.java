@@ -115,6 +115,10 @@ public class TileMap {
 				save+="t";
 			else
 				save+="f";
+			save+=",";
+			save+=t.getClass().getName();
+			save+=",";
+			save+=t.getParamString();
 			save+=" ";
 		}
 		return save;
