@@ -314,10 +314,6 @@ public class FXHandler {
 			else
 				t.setSolid(false);
 			currentLoadZone.getTileMap().setTile(p, t);
-			} else if (selection.equals("decorations")){
-				if (decorations.containsKey(imageName)){
-					currentLoadZone.getDecMap().add(new Decoration(x,y,imageName));
-				}
 			}
 		});
 
