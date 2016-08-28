@@ -65,5 +65,9 @@ public class Tile {
 		return new Tile("illuminati.jpg",false);
 	}
 	
-	public void onWalkOver() {}
+	public void onWalkOver(Player player) {}
+	
+	public void onAction(Player player) {}
+	
+	public void onTrigger(String event, Tile caller) {}
 }
