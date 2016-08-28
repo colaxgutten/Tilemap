@@ -60,7 +60,7 @@ public class LoadZone {
 				int posY = Integer.valueOf(tileArray[1]);
 				String tileImageId = tileArray[2];
 				String type = tileArray[4];
-				String[] params = tileArray[5].split(";");
+				String[] params = tileArray.length > 5 ? tileArray[5].split(";") : new String[0];
 				
 				boolean solid = false;
 				if (tileArray[3].equals("t"))
