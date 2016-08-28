@@ -293,6 +293,8 @@ public class FXHandler {
 		});
 		
 		canvas.setOnMouseDragged(e -> {
+			if(deleteDec.isSelected()) return;
+			
 			int x = (int) (Math.floor(e.getX()) / tileSize) + canvasXpos;
 			int y = (int) (Math.floor(e.getY()) / tileSize) + canvasYpos;
 			String imageName = "";
