@@ -4,6 +4,7 @@ public class Decoration {
 	private String imageName;
 	private double xPos;
 	private double yPos;
+	private boolean isSelected = false;
 
 	public Decoration(double xPos, double yPos, String imageName) {
 		this.xPos = xPos;
@@ -38,5 +39,13 @@ public class Decoration {
 	@Override
 	public String toString() {
 		return String.format(Locale.US, "%.1f,%.1f,%s", xPos, yPos, imageName);
+	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 }

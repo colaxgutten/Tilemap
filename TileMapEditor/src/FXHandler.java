@@ -52,6 +52,7 @@ public class FXHandler {
 	
 	CheckBox solid;
 	CheckBox showSolid;
+	CheckBox deleteDec;
 	VBox propertiesBox;
 	HashMap<String,Image> tiles;
 	HashMap<String,Image> decorations;
@@ -230,11 +231,13 @@ public class FXHandler {
 
 		solid = new CheckBox("Solid");
 		showSolid = new CheckBox("Show solid");
+		deleteDec = new CheckBox("Delete decoration");
 		
 		propertiesBox = new VBox();
 		propertiesBox.setSpacing(20);
 		propertiesBox.getChildren().add(solid);
 		propertiesBox.getChildren().add(showSolid);
+		propertiesBox.getChildren().add(deleteDec);
 		
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
@@ -254,8 +257,15 @@ public class FXHandler {
 	private void setCanvasEvents(Canvas canvas) {
 		canvas.setOnMouseClicked(e -> {
 			canvas.requestFocus();
+			
 			double x = e.getX();
 			double y = e.getY();
+			
+			if(deleteDec.isSelected()) {
+				currentLoadZone.getDecMap().selectDecorationAt(x, y, new Point(canvasXpos, canvasYpos), tileSize, decorations);
+				return;
+			}
+			
 			int tileX = (int) Math.floor(x / tileSize) + canvasXpos;
 			int tileY = (int) Math.floor(y / tileSize) + canvasYpos;
 			System.out.println(tileX + " " + tileY);
@@ -334,6 +344,8 @@ public class FXHandler {
 					canvasXpos = 0;
 					canvasYpos = 0;
 					break;
+				case DELETE:
+					currentLoadZone.getDecMap().deleteSelected();
 				}
 			}
 

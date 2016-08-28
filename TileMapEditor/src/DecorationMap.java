@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class DecorationMap {
 	private List<Decoration> decorations = new ArrayList<>();
@@ -44,6 +45,46 @@ public class DecorationMap {
 			
 			
 				gc.drawImage(image, drawPosX, drawPosY, image.getWidth()*scalevalue, image.getHeight()*scalevalue);
+				if(dec.isSelected()) {
+					gc.setStroke(Color.BLUE);
+					gc.setLineWidth(2);
+					gc.strokeRect(drawPosX, drawPosY, image.getWidth()*scalevalue, image.getHeight()*scalevalue);
+				}
+			}
+		}
+	}
+	
+	public boolean selectDecorationAt(double x, double y, Point pos, int tileSize, Map<String, Image> images) {
+		Decoration sel = null;
+		
+		for(Decoration dec : decorations) {
+			Image image = images.get(dec.getImageName());
+			double scalevalue= tileSize/48.0;
+			double topLeftX = (dec.getxPos() - pos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
+			double topLeftY = (dec.getyPos() - pos.y) * tileSize - image.getHeight()*scalevalue + tileSize;
+			double width = image.getWidth();
+			double height = image.getHeight();
+			
+			dec.setSelected(false);
+			
+			if(x >= topLeftX && x <= topLeftX + width && y >= topLeftY && y <= topLeftY + height) {
+				sel = dec;
+			}
+		}
+		
+		if(sel != null) {
+			sel.setSelected(true);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void deleteSelected() {
+		for(int i = 0; i < decorations.size(); ++i) {
+			if(decorations.get(i).isSelected()) {
+				decorations.remove(i);
+				--i;
 			}
 		}
 	}
