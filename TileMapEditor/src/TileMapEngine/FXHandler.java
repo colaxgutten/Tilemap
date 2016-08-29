@@ -32,6 +32,7 @@ public class FXHandler {
 	private VBox rightSideBox;
 	private VBox leftContainer;
 	private Canvas center;
+	private String[] tileTypes = {"DoorTile","Tile","ChestTile"};
 
 	int tilesToBePainted = 16;
 	
@@ -44,6 +45,8 @@ public class FXHandler {
 	
 	TextField saveName;
 	TextField searchBarForTiles = new TextField();
+	TextField eventInput;
+	ComboBox tileTypesForEventInput;
 	ObservableList<String> saveStrings;
 	ObservableList<String> searchStrings;
 	ComboBox savedFiles;
@@ -148,6 +151,9 @@ public class FXHandler {
 	public void loadLeftSide(HashMap<String,Image> tiles,HashMap<String,Image> decorations) {
 		leftSideBox = new HBox();
 		leftContainer = new VBox();
+		eventInput = new TextField();
+		tileTypesForEventInput = new ComboBox();
+		tileTypesForEventInput.getItems().addAll(tileTypes);
 		imageSelection = new ComboBox();
 		imageSelection.getItems().add("tiles");
 		imageSelection.getItems().add("decorations");
@@ -243,6 +249,8 @@ public class FXHandler {
 		propertiesBox.getChildren().add(solid);
 		propertiesBox.getChildren().add(showSolid);
 		propertiesBox.getChildren().add(deleteDec);
+		propertiesBox.getChildren().add(tileTypesForEventInput);
+		propertiesBox.getChildren().add(eventInput);
 		
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
