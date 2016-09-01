@@ -171,7 +171,6 @@ public class FXHandler {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {		
-					System.out.println("hei");
 					Decoration dec = currentLoadZone.getDecMap().getSelected();
 					if (dec!=null){
 						dec.setyAdjust(-decorationSlider.getValue());
