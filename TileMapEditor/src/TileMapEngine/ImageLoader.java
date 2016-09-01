@@ -13,8 +13,18 @@ public class ImageLoader {
 	boolean loaded = false;
 	private HashMap<String,Image> tiles = new HashMap<String,Image>();
 	private HashMap<String,Image> decorations = new HashMap<String,Image>();
+	/*
+	private static ImageLoader instance;
 	
+	public static ImageLoader getInstance () {
+		if(instance == null) {
+			instance = new ImageLoader();
+		}
+		return instance;
+	}
 	
+	private ImageLoader() {}
+	*/
 	public void loadFolderTiles(String folderPath){
 		final File folder = new File("images\\tileImages");
 		loadTiles(folder);

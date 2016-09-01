@@ -15,34 +15,41 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class DecorationMap {
-	private List<Decoration> decorations = new ArrayList<>();
+	private Map<Point, Decoration> decorations = new HashMap<>();
+	private Point selected;
 	
-	public void add(Decoration dec) {
-		decorations.add(dec);
+	public void add(Point pos, Decoration dec) {
+		decorations.put(pos, dec);
 	}
 	
-	public List<Decoration> getAll() {
+	public Map<Point, Decoration> getAll() {
 		return decorations;
 	}
 	
-	public void draw(Canvas canvas, Point pos, int tileSize, HashMap<String,Image> images) {
+	public void draw(Canvas canvas, Point canvasPos, int tileSize, HashMap<String,Image> images) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		Collections.sort(decorations, new Comparator<Decoration>() {
+		
+		List<Map.Entry<Point, Decoration>> entries = new ArrayList<>(decorations.entrySet());
+		
+		Collections.sort(entries, new Comparator<Map.Entry<Point, Decoration>>() {
 			@Override
-			public int compare(Decoration o1, Decoration o2) {
-				if (o1.getyPos()<o2.getyPos())
+			public int compare(Map.Entry<Point, Decoration> o1, Map.Entry<Point, Decoration> o2) {
+				if (o1.getKey().getY()<o2.getKey().getY())
 					return -1;
-				if (o1.getyPos()>o2.getyPos())
+				if (o1.getKey().getY()>o2.getKey().getY())
 					return 1;
 				return 0;
 			}
 		});
-		for(Decoration dec : decorations) {
+		for(Map.Entry<Point, Decoration> entry : entries) {
+			Decoration dec = entry.getValue();
+			Point pos = entry.getKey();
+			
 			Image image = images.get(dec.getImageName());
 			if(image != null) {
 			double scalevalue= tileSize/48.0;
-			double drawPosX = (dec.getxPos() - pos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
-			double drawPosY = (dec.getyPos() - pos.y) * tileSize - image.getHeight()*scalevalue + tileSize;
+			double drawPosX = (pos.getX() - canvasPos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
+			double drawPosY = (pos.getY() - canvasPos.y) * tileSize - image.getHeight()*scalevalue + tileSize;
 			
 			
 				gc.drawImage(image, drawPosX, drawPosY, image.getWidth()*scalevalue, image.getHeight()*scalevalue);
@@ -55,26 +62,27 @@ public class DecorationMap {
 		}
 	}
 	
-	public boolean selectDecorationAt(double x, double y, Point pos, int tileSize, Map<String, Image> images) {
-		Decoration sel = null;
+	public boolean selectDecorationAt(double x, double y, Point canvasPos, int tileSize, Map<String, Image> images) {
+		Point newSelection = null;
 		
-		for(Decoration dec : decorations) {
+		for(Map.Entry<Point, Decoration> entry : decorations.entrySet()) {
+			Decoration dec = entry.getValue();
+			Point pos = entry.getKey();
+			
 			Image image = images.get(dec.getImageName());
 			double scalevalue= tileSize/48.0;
-			double topLeftX = (dec.getxPos() - pos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
-			double topLeftY = (dec.getyPos() - pos.y) * tileSize - image.getHeight()*scalevalue + tileSize;
+			double topLeftX = (pos.getX() - canvasPos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
+			double topLeftY = (pos.getY() - canvasPos.y) * tileSize - image.getHeight()*scalevalue + tileSize;
 			double width = image.getWidth();
 			double height = image.getHeight();
 			
-			dec.setSelected(false);
-			
 			if(x >= topLeftX && x <= topLeftX + width && y >= topLeftY && y <= topLeftY + height) {
-				sel = dec;
+				newSelection = pos;
 			}
 		}
 		
-		if(sel != null) {
-			sel.setSelected(true);
+		if(newSelection != null) {
+			selected = newSelection;
 			return true;
 		}
 		
@@ -82,17 +90,14 @@ public class DecorationMap {
 	}
 	
 	public void deleteSelected() {
-		for(int i = 0; i < decorations.size(); ++i) {
-			if(decorations.get(i).isSelected()) {
-				decorations.remove(i);
-				--i;
-			}
+		if(selected != null) {
+			decorations.remove(selected);
 		}
 	}
 	
 	public String toString() {
 		String save = "";
-		for (Decoration dec : decorations){
+		for (Decoration dec : decorations.values()){
 			save += dec.toString() + " ";
 		}
 		return save;

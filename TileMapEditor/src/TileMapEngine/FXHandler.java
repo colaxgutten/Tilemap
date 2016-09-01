@@ -319,7 +319,7 @@ public class FXHandler {
 			currentLoadZone.getTileMap().selectTileAt((int)p.getX(), (int)p.getY());
 			} else if (selection.equals("decorations")){
 				if (decorations.containsKey(imageName)){
-				currentLoadZone.getDecMap().add(new Decoration(tileX,tileY,imageName));
+				currentLoadZone.getDecMap().add(new Point(tileX, tileY), new Decoration(tileX,tileY,imageName));
 				}
 			}
 		});

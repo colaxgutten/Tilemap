@@ -88,7 +88,7 @@ public class LoadZone {
 				
 				Decoration dec = new Decoration(posX, posY, decArray[2]);
 				
-				decMap.add(dec);
+				decMap.add(new Point((int)posX, (int)posY), dec);
 			}
 			
 		} catch (Exception e) {
