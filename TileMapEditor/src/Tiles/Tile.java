@@ -5,7 +5,7 @@ import java.util.List;
 
 import TileMapEngine.Player;
 
-public class Tile {
+public class Tile implements TileInterface {
 	private String tileImageName;
 	private String[] params;
 	private int toolId=0;
@@ -88,10 +88,10 @@ public class Tile {
 	public static Tile getBasicTile() {
 		return new Tile("illuminati.jpg",false);
 	}
-	
+	@Override
 	public void onWalkOver(Player player) {}
-	
+	@Override
 	public void onAction(Player player) {}
-	
+	@Override
 	public void onTrigger(String event, Tile caller) {}
 }
