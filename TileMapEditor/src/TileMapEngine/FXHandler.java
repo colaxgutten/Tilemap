@@ -55,7 +55,7 @@ public class FXHandler {
 	Label zoomValueLabel;
 	ScrollBar canvasZoom;
 	Slider decorationSlider;
-	double decorationSliderMaxValue = 96;
+	double decorationSliderMaxValue = 5;
 	
 	CheckBox solid;
 	CheckBox showSolid;
@@ -167,8 +167,17 @@ public class FXHandler {
 		
 		decorationSlider.setMax(decorationSliderMaxValue);
 		decorationSlider.setMin(0);
-		decorationSlider.setOnScroll(e -> {
-			decorationSlider.getValue();
+		decorationSlider.valueProperty().addListener(new ChangeListener<Number>(){
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {		
+					System.out.println("hei");
+					Decoration dec = currentLoadZone.getDecMap().getSelected();
+					if (dec!=null){
+						dec.setyAdjust(-decorationSlider.getValue());
+					}	
+			}
+			
 		});
 		
 		imageSelection.valueProperty().addListener(new ChangeListener<String>() {
