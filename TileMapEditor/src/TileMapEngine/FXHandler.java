@@ -54,6 +54,8 @@ public class FXHandler {
 	String currentSaveFile = "";
 	Label zoomValueLabel;
 	ScrollBar canvasZoom;
+	Slider decorationSlider;
+	double decorationSliderMaxValue = 96;
 	
 	CheckBox solid;
 	CheckBox showSolid;
@@ -152,6 +154,7 @@ public class FXHandler {
 		leftSideBox = new HBox();
 		leftContainer = new VBox();
 		eventInput = new TextField();
+		decorationSlider = new Slider();
 		tileTypesForEventInput = new ComboBox();
 		tileTypesForEventInput.getItems().addAll(tileTypes);
 		imageSelection = new ComboBox();
@@ -161,6 +164,12 @@ public class FXHandler {
 		
 		this.tiles = tiles;
 		this.decorations = decorations;
+		
+		decorationSlider.setMax(decorationSliderMaxValue);
+		decorationSlider.setMin(0);
+		decorationSlider.setOnScroll(e -> {
+			decorationSlider.getValue();
+		});
 		
 		imageSelection.valueProperty().addListener(new ChangeListener<String>() {
 	        @Override public void changed(ObservableValue ov, String t, String t1) {
@@ -251,6 +260,7 @@ public class FXHandler {
 		propertiesBox.getChildren().add(deleteDec);
 		propertiesBox.getChildren().add(tileTypesForEventInput);
 		propertiesBox.getChildren().add(eventInput);
+		propertiesBox.getChildren().add(decorationSlider);
 		
 		leftSideBox.getChildren().add(listImages);
 		leftSideBox.getChildren().add(propertiesBox);
