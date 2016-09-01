@@ -83,12 +83,14 @@ public class LoadZone {
 			
 			for(String decString : decLine.split(" ")) {
 				String[] decArray = decString.split(",");
-				double posX = Double.valueOf(decArray[0]);
-				double posY = Double.valueOf(decArray[1]);
+				int posX = Integer.valueOf(decArray[0]);
+				int posY = Integer.valueOf(decArray[1]);
+				double xAdjust = Double.valueOf(decArray[2]);
+				double yAdjust = Double.valueOf(decArray[3]);
 				
-				Decoration dec = new Decoration(posX, posY, decArray[2]);
+				Decoration dec = new Decoration(posX, posY, xAdjust, yAdjust, decArray[4]);
 				
-				decMap.add(new Point((int)posX, (int)posY), dec);
+				decMap.add(new Point(posX, posY), dec);
 			}
 			
 		} catch (Exception e) {

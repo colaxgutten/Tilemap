@@ -53,7 +53,7 @@ public class DecorationMap {
 			
 			
 				gc.drawImage(image, drawPosX, drawPosY, image.getWidth()*scalevalue, image.getHeight()*scalevalue);
-				if(dec.isSelected()) {
+				if(isSelected(pos)) {
 					gc.setStroke(Color.BLUE);
 					gc.setLineWidth(2);
 					gc.strokeRect(drawPosX, drawPosY, image.getWidth()*scalevalue, image.getHeight()*scalevalue);
@@ -77,7 +77,9 @@ public class DecorationMap {
 			double height = image.getHeight();
 			
 			if(x >= topLeftX && x <= topLeftX + width && y >= topLeftY && y <= topLeftY + height) {
-				newSelection = pos;
+				if((newSelection == null || pos.getY() > newSelection.getY())) {
+					newSelection = pos;
+				}
 			}
 		}
 		
@@ -87,6 +89,10 @@ public class DecorationMap {
 		}
 		
 		return false;
+	}
+	
+	public boolean isSelected(Point pos) {
+		return selected != null && selected.equals(pos);
 	}
 	
 	public void deleteSelected() {

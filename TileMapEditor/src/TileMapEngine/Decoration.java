@@ -3,13 +3,23 @@ import java.util.Locale;
 
 public class Decoration {
 	private String imageName;
-	private double xPos;
-	private double yPos;
-	private boolean isSelected = false;
+	private int xPos;
+	private int yPos;
+	
+	private double xAdjust;
+	private double yAdjust;
 
-	public Decoration(double xPos, double yPos, String imageName) {
+	public Decoration(int xPos, int yPos, String imageName) {
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.imageName = imageName;
+	}
+
+	public Decoration(int xPos, int yPos, double xAdjust, double yAdjust, String imageName) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.xAdjust = xAdjust;
+		this.yAdjust = yAdjust;
 		this.imageName = imageName;
 	}
 	
@@ -21,32 +31,40 @@ public class Decoration {
 		this.imageName = imageName;
 	}
 
-	public double getxPos() {
+	public double getxAdjust() {
+		return xAdjust;
+	}
+
+	public void setxAdjust(double xAdjust) {
+		this.xAdjust = xAdjust;
+	}
+
+	public double getyAdjust() {
+		return yAdjust;
+	}
+
+	public void setyAdjust(double yAdjust) {
+		this.yAdjust = yAdjust;
+	}
+
+	public int getxPos() {
 		return xPos;
 	}
 
-	public void setxPos(double xPos) {
+	public void setxPos(int xPos) {
 		this.xPos = xPos;
 	}
 
-	public double getyPos() {
+	public int getyPos() {
 		return yPos;
 	}
 
-	public void setyPos(double yPos) {
+	public void setyPos(int yPos) {
 		this.yPos = yPos;
 	}
 
 	@Override
 	public String toString() {
-		return String.format(Locale.US, "%.1f,%.1f,%s", xPos, yPos, imageName);
-	}
-
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
+		return String.format(Locale.US, "%d,%d,%.2f,%.2f,%s", xPos, yPos, xAdjust, yAdjust, imageName);
 	}
 }
