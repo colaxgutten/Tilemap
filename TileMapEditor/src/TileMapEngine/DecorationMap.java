@@ -38,6 +38,10 @@ public class DecorationMap {
 					return -1;
 				if (o1.getKey().getY()>o2.getKey().getY())
 					return 1;
+				if (o1.getValue().getyAdjust()<o2.getValue().getyAdjust())
+					return -1;
+				if (o1.getValue().getyAdjust()>o2.getValue().getyAdjust())
+					return 1;
 				return 0;
 			}
 		});
@@ -48,8 +52,8 @@ public class DecorationMap {
 			Image image = images.get(dec.getImageName());
 			if(image != null) {
 			double scalevalue= tileSize/48.0;
-			double drawPosX = (pos.getX() - canvasPos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
-			double drawPosY = (pos.getY() - canvasPos.y) * tileSize - image.getHeight()*scalevalue + tileSize;
+			double drawPosX = (pos.getX() - canvasPos.x + dec.getxAdjust()) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
+			double drawPosY = (pos.getY() - canvasPos.y + dec.getyAdjust()) * tileSize - image.getHeight()*scalevalue + tileSize;
 			
 			
 				gc.drawImage(image, drawPosX, drawPosY, image.getWidth()*scalevalue, image.getHeight()*scalevalue);
