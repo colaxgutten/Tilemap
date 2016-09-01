@@ -91,6 +91,10 @@ public class DecorationMap {
 		return false;
 	}
 	
+	public Decoration getSelected() {
+		return decorations.get(selected);
+	}
+	
 	public boolean isSelected(Point pos) {
 		return selected != null && selected.equals(pos);
 	}
