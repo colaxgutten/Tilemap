@@ -1,14 +1,17 @@
 package TileMapEngine;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import Tiles.Tile;
+import TilesFromWeb.ImageReaderFromOpenArt;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -42,10 +45,14 @@ public class FXHandler {
 	private String leftClickSelectedItem;
 	private String rightClickselectedItem;
 	String prevSelectedListViewItemIndex = "";
+	ImageReaderFromOpenArt imgr = new ImageReaderFromOpenArt();
+	ArrayList<Image> webImagesLoaded;
 	
 	TextField saveName;
 	TextField searchBarForTiles = new TextField();
 	TextField eventInput;
+	TextField webImages;
+	ListView<Image> webImageListView;
 	ComboBox tileTypesForEventInput;
 	ObservableList<String> saveStrings;
 	ObservableList<String> searchStrings;
@@ -157,6 +164,33 @@ public class FXHandler {
 		decorationSlider = new Slider();
 		tileTypesForEventInput = new ComboBox();
 		tileTypesForEventInput.getItems().addAll(tileTypes);
+		webImages=new TextField();
+		webImageListView = new ListView<Image>();
+		webImageListView.setCellFactory( list -> new ListCell<Image> () {
+			@Override
+			protected void updateItem(Image img, boolean empty) {
+				ImageView im = new ImageView();
+				im.setFitHeight(80);
+				im.setFitWidth(80);
+				super.updateItem(img, empty);
+				if (img == null || empty) {
+					setText(null);
+					setGraphic(null);
+				} else {
+					im.setImage(img);
+					setGraphic(im);
+				}
+			}
+		});
+		webImages.setOnAction(e -> {
+			String search = webImages.getText();
+			if (search!= null && search.length()>0){
+				webImagesLoaded = imgr.getImagesFromWeb(search);
+				webImages.clear();
+				webImageListView.getItems().addAll(webImagesLoaded);
+			}
+		});
+		
 		imageSelection = new ComboBox();
 		imageSelection.getItems().add("tiles");
 		imageSelection.getItems().add("decorations");
@@ -275,6 +309,8 @@ public class FXHandler {
 		leftContainer.getChildren().add(searchBarForTiles);
 		leftContainer.getChildren().add(imageSelection);
 		leftContainer.getChildren().add(leftSideBox);
+		leftContainer.getChildren().add(webImages);
+		leftContainer.getChildren().add(webImageListView);
 	}
 
 	private void copyOfStrings(ObservableList<String> stringsToCopy, ObservableList<String> saveStrings2) {
