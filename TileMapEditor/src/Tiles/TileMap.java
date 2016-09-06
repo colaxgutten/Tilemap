@@ -49,11 +49,11 @@ public class TileMap {
 		}
 	}
 	
-	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> images) {
+	public void draw(Canvas canvas, Point canvasPos, int tileSize, boolean showSolid, HashMap<String,Image> images, HashMap<String,Image> decImages) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
-		for(int i = pos.x; i < canvas.getWidth() / tileSize + pos.x; i++) {
-			for(int j = pos.y; j < canvas.getHeight() / tileSize + pos.y; j++) {
+		for(int i = canvasPos.x; i < canvas.getWidth() / tileSize + canvasPos.x; i++) {
+			for(int j = canvasPos.y; j < canvas.getHeight() / tileSize + canvasPos.y; j++) {
 				Image image;
 				String imageName = getTile(new Point(i, j)).getTileImageId();
 				
@@ -66,13 +66,31 @@ public class TileMap {
 				if (showSolid && !getTile(new Point(i, j)).isSolid()) {
 					gc.setGlobalAlpha(0.2);
 				}
-				gc.drawImage(image, (i - pos.x) * tileSize, (j - pos.y) * tileSize, tileSize, tileSize);
+				gc.drawImage(image, (i - canvasPos.x) * tileSize, (j - canvasPos.y) * tileSize, tileSize, tileSize);
 				gc.setGlobalAlpha(1);
 				
 				if(selected != null && 	selected.equals(new Point(i, j))) {
 					gc.setLineWidth(2);
 					gc.setStroke(Color.BLUE);
-					gc.strokeRect((i - pos.x) * tileSize, (j - pos.y) * tileSize, tileSize, tileSize);
+					gc.strokeRect((i - canvasPos.x) * tileSize, (j - canvasPos.y) * tileSize, tileSize, tileSize);
+				}
+				
+				for(int k = 0; k < getTile(new Point(k, k)).getDecorations().size(); ++k) {
+					Decoration dec = getTile(new Point(k, k)).getDecorations().get(k);
+					Image decImage = decImages.get(dec.getImageName());
+					if(image != null) {
+					double scalevalue= tileSize/48.0;
+					double drawPosX = (canvasPos.getX() - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
+					double drawPosY = (canvasPos.getY() - canvasPos.y + dec.getyAdjust()) * tileSize - decImage.getHeight()*scalevalue + tileSize;
+					
+					
+						gc.drawImage(image, drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
+						if(decIsSelected(canvasPos, k)) {
+							gc.setStroke(Color.BLUE);
+							gc.setLineWidth(2);
+							gc.strokeRect(drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
+						}
+					}
 				}
 			}
 		}
@@ -169,6 +187,14 @@ public class TileMap {
 	
 	public void removeSelection() {
 		selected = null;
+	}
+	
+	public String decString() {
+		String s = "";
+		for(Map.Entry<Point, Tile> entry : grid.entrySet()) {
+			s += entry.getValue().getDecorationSaveString();
+		}
+		return s;
 	}
 	
 	/**

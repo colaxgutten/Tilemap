@@ -36,8 +36,8 @@ public class LoadZone {
 	}
 	
 	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> tiles, HashMap<String, Image> decorations) {
-		tileMap.draw(canvas, pos, tileSize, showSolid, tiles);
-		decMap.draw(canvas, pos, tileSize, decorations);
+		tileMap.draw(canvas, pos, tileSize, showSolid, tiles, decorations);
+//		decMap.draw(canvas, pos, tileSize, decorations);
 	}
 
 	public void loadFromFile(String fileName) {
@@ -119,7 +119,7 @@ public class LoadZone {
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(tileMap.toString());
 			bw.newLine();
-			bw.write(decMap.toString());
+			bw.write(tileMap.decString());
 			bw.close();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -62,7 +62,7 @@ public class Tile implements TileInterface {
 	public String getDecorationSaveString() {
 		String s = "";
 		for(Decoration dec : decorations) {
-			s += dec.toString();
+			s += dec.toString() + " ";
 		}
 		return s;
 	}
