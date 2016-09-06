@@ -1,8 +1,8 @@
 package Tiles;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import TileMapEngine.Decoration;
 import TileMapEngine.Player;
 
 public class Tile implements TileInterface {
@@ -10,6 +10,8 @@ public class Tile implements TileInterface {
 	private String[] params;
 	private int toolId=0;
 	boolean solid;
+	
+	private List<Decoration> decorations;
 	
 	public Tile(String tileImageName, boolean solid) {
 		this.tileImageName=tileImageName;
@@ -35,6 +37,10 @@ public class Tile implements TileInterface {
 		return tileImageName;
 	}
 	
+	public List<Decoration> getDecorations() {
+		return decorations;
+	}
+	
 	public boolean isSolid(){
 		return solid;
 	}
@@ -50,6 +56,14 @@ public class Tile implements TileInterface {
 			s+="t,";
 		else
 			s+="f,";
+		return s;
+	}
+	
+	public String getDecorationSaveString() {
+		String s = "";
+		for(Decoration dec : decorations) {
+			s += dec.toString();
+		}
 		return s;
 	}
 	

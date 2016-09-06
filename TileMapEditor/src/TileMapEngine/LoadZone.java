@@ -90,7 +90,7 @@ public class LoadZone {
 				
 				Decoration dec = new Decoration(posX, posY, xAdjust, yAdjust, decArray[4]);
 				
-				decMap.add(new Point(posX, posY), dec);
+				tileMap.getTile(new Point(posX, posY)).getDecorations().add(dec);
 			}
 			
 		} catch (Exception e) {

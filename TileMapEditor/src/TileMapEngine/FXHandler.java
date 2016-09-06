@@ -205,7 +205,7 @@ public class FXHandler {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {		
-					Decoration dec = currentLoadZone.getDecMap().getSelected();
+					Decoration dec = currentLoadZone.getTileMap().getSelectedDec();
 					if (dec!=null){
 						dec.setyAdjust(-decorationSlider.getValue());
 					}	
@@ -336,7 +336,7 @@ public class FXHandler {
 			double y = e.getY();
 			
 			if(deleteDec.isSelected()) {
-				currentLoadZone.getDecMap().selectDecorationAt(x, y, new Point(canvasXpos, canvasYpos), tileSize, decorations);
+				currentLoadZone.getTileMap().selectDecorationAt(x, y, new Point(canvasXpos, canvasYpos), tileSize, decorations);
 				return;
 			}
 			
@@ -363,7 +363,7 @@ public class FXHandler {
 			currentLoadZone.getTileMap().selectTileAt((int)p.getX(), (int)p.getY());
 			} else if (selection.equals("decorations")){
 				if (decorations.containsKey(imageName)){
-				currentLoadZone.getDecMap().add(new Point(tileX, tileY), new Decoration(tileX,tileY,imageName));
+				currentLoadZone.getTileMap().getTile(new Point(tileX, tileY)).getDecorations().add(new Decoration(tileX,tileY,imageName));
 				}
 			}
 		});
@@ -419,7 +419,7 @@ public class FXHandler {
 					canvasYpos = 0;
 					break;
 				case DELETE:
-					currentLoadZone.getDecMap().deleteSelected();
+					currentLoadZone.getTileMap().deleteSelectedDec();
 				}
 			}
 
