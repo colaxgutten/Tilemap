@@ -369,7 +369,7 @@ public class FXHandler {
 					System.out.println(currentLoadZone.getTileMap());
 					System.out.println(currentLoadZone.getTileMap().getTile(new Point(tileX,tileY)));
 					System.out.println(currentLoadZone.getTileMap().getTile(new Point(tileX,tileY)).getDecorations());
-				currentLoadZone.getTileMap().getTile(new Point(tileX, tileY)).getDecorations().add(new Decoration(tileX,tileY,imageName));
+				currentLoadZone.getTileMap().addDecoration(new Point(tileX, tileY), new Decoration(tileX,tileY,imageName));
 				}
 			}
 		});

@@ -41,6 +41,13 @@ public class TileMap {
 		return grid.size();
 	}
 	
+	public void addDecoration(Point pos, Decoration dec) {
+		if(grid.get(pos) == null) {
+			grid.put(pos, Tile.getBasicTile());
+		}
+		grid.get(pos).getDecorations().add(dec);
+	}
+	
 	public void printTiles(){
 		System.out.println("trying to print tiles");
 		System.out.println("size of tileMap is: "+grid.size());
