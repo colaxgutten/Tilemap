@@ -90,7 +90,6 @@ public class TileMap {
 			Decoration dec = getTile(new Point(i, j)).getDecorations().get(k);
 			Image decImage = decImages.get(dec.getImageName());
 			if(decImage != null) {
-				System.out.println("image er ikke null på pos: " + i + ","+j);
 			double scalevalue= tileSize/48.0;
 			double drawPosX = (i - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
 			double drawPosY = (j - canvasPos.y + dec.getyAdjust()) * tileSize - decImage.getHeight()*scalevalue + tileSize;
