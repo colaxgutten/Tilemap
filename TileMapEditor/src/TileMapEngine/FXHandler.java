@@ -186,7 +186,7 @@ public class FXHandler {
 			String search = webImages.getText();
 			if (search!= null && search.length()>0){
 				webImagesLoaded = imgr.getImagesFromWeb(search);
-				webImages.clear();
+				webImageListView.getItems().clear();
 				webImageListView.getItems().addAll(webImagesLoaded);
 			}
 		});
