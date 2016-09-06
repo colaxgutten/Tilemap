@@ -92,8 +92,8 @@ public class TileMap {
 			if(decImage != null) {
 				System.out.println("image er ikke null på pos: " + i + ","+j);
 			double scalevalue= tileSize/48.0;
-			double drawPosX = (canvasPos.getX() - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
-			double drawPosY = (canvasPos.getY() - canvasPos.y + dec.getyAdjust()) * tileSize - decImage.getHeight()*scalevalue + tileSize;
+			double drawPosX = (i - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
+			double drawPosY = (j - canvasPos.y + dec.getyAdjust()) * tileSize - decImage.getHeight()*scalevalue + tileSize;
 			
 			
 				gc.drawImage(decImage, drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
