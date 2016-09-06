@@ -74,9 +74,8 @@ public class TileMap {
 					gc.setStroke(Color.BLUE);
 					gc.strokeRect((i - canvasPos.x) * tileSize, (j - canvasPos.y) * tileSize, tileSize, tileSize);
 				}
-				
-				for(int k = 0; k < getTile(new Point(k, k)).getDecorations().size(); ++k) {
-					Decoration dec = getTile(new Point(k, k)).getDecorations().get(k);
+				for(int k = 0; getTile(new Point(i, j)).getDecorations()!=null && k < getTile(new Point(i, j)).getDecorations().size(); ++k) {
+					Decoration dec = getTile(new Point(i, j)).getDecorations().get(k);
 					Image decImage = decImages.get(dec.getImageName());
 					if(image != null) {
 					double scalevalue= tileSize/48.0;
