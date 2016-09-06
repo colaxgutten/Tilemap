@@ -96,7 +96,7 @@ public class TileMap {
 			
 			
 				gc.drawImage(decImage, drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
-				if(decIsSelected(canvasPos, k)) {
+				if(decIsSelected(new Point(i, j), k)) {
 					gc.setStroke(Color.BLUE);
 					gc.setLineWidth(2);
 					gc.strokeRect(drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
