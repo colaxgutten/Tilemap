@@ -74,26 +74,32 @@ public class TileMap {
 					gc.setStroke(Color.BLUE);
 					gc.strokeRect((i - canvasPos.x) * tileSize, (j - canvasPos.y) * tileSize, tileSize, tileSize);
 				}
+			}
+		}
+		
+		for(int i = canvasPos.x; i < canvas.getWidth() / tileSize + canvasPos.x; i++) {
+			for(int j = canvasPos.y; j < canvas.getHeight() / tileSize + canvasPos.y; j++) {
 				for(int k = 0; getTile(new Point(i, j)).getDecorations()!=null && k < getTile(new Point(i, j)).getDecorations().size(); ++k) {
-					Decoration dec = getTile(new Point(i, j)).getDecorations().get(k);
-					Image decImage = decImages.get(dec.getImageName());
-					if(image != null) {
-					double scalevalue= tileSize/48.0;
-					double drawPosX = (canvasPos.getX() - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
-					double drawPosY = (canvasPos.getY() - canvasPos.y + dec.getyAdjust()) * tileSize - decImage.getHeight()*scalevalue + tileSize;
-					
-					
-						gc.drawImage(image, drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
-						if(decIsSelected(canvasPos, k)) {
-							gc.setStroke(Color.BLUE);
-							gc.setLineWidth(2);
-							gc.strokeRect(drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
-						}
-					}
+			Decoration dec = getTile(new Point(i, j)).getDecorations().get(k);
+			Image decImage = decImages.get(dec.getImageName());
+			if(decImage != null) {
+				System.out.println("image er ikke null på pos: " + i + ","+j);
+			double scalevalue= tileSize/48.0;
+			double drawPosX = (canvasPos.getX() - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
+			double drawPosY = (canvasPos.getY() - canvasPos.y + dec.getyAdjust()) * tileSize - decImage.getHeight()*scalevalue + tileSize;
+			
+			
+				gc.drawImage(decImage, drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
+				if(decIsSelected(canvasPos, k)) {
+					gc.setStroke(Color.BLUE);
+					gc.setLineWidth(2);
+					gc.strokeRect(drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
 				}
 			}
 		}
-
+			}
+			}
+		
 		/*
 		
 		Image imageById = null;
