@@ -37,7 +37,7 @@ public class LoadZone {
 	
 	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> tiles, HashMap<String, Image> decorations) {
 		tileMap.draw(canvas, pos, tileSize, showSolid, tiles, decorations);
-//		decMap.draw(canvas, pos, tileSize, decorations);
+		decMap.draw(canvas, pos, tileSize, decorations);
 	}
 
 	public void loadFromFile(String fileName) {

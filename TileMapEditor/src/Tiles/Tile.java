@@ -27,6 +27,7 @@ public class Tile implements TileInterface {
 		this.params = params;
 		this.tileImageName=tileImageName;
 		this.solid=solid;
+		decorations = new ArrayList<Decoration>();
 	}
 	
 	public void setTileImageName(String name){
@@ -100,7 +101,9 @@ public class Tile implements TileInterface {
 	}
 
 	public static Tile getBasicTile() {
-		return new Tile("illuminati.jpg",false);
+		String[] s = new String[1];
+		Tile t = new Tile(s, "illuminati.jpg",false);
+		return t;
 	}
 	@Override
 	public void onWalkOver(Player player) {}

@@ -363,6 +363,12 @@ public class FXHandler {
 			currentLoadZone.getTileMap().selectTileAt((int)p.getX(), (int)p.getY());
 			} else if (selection.equals("decorations")){
 				if (decorations.containsKey(imageName)){
+					if (currentLoadZone.getTileMap().getTile(new Point(tileX, tileY))==null)
+						currentLoadZone.getTileMap().setTile(new Point(tileX, tileY), Tile.getBasicTile());
+					System.out.println(currentLoadZone);
+					System.out.println(currentLoadZone.getTileMap());
+					System.out.println(currentLoadZone.getTileMap().getTile(new Point(tileX,tileY)));
+					System.out.println(currentLoadZone.getTileMap().getTile(new Point(tileX,tileY)).getDecorations());
 				currentLoadZone.getTileMap().getTile(new Point(tileX, tileY)).getDecorations().add(new Decoration(tileX,tileY,imageName));
 				}
 			}
