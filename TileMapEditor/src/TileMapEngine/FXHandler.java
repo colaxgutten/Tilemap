@@ -205,7 +205,7 @@ public class FXHandler {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {		
-					Decoration dec = currentLoadZone.getTileMap().getSelectedDec();
+					DecorationOld dec = currentLoadZone.getTileMap().getSelectedDec();
 					if (dec!=null){
 						dec.setyAdjust(-decorationSlider.getValue());
 					}	
@@ -365,11 +365,7 @@ public class FXHandler {
 				if (decorations.containsKey(imageName)){
 					if (currentLoadZone.getTileMap().getTile(new Point(tileX, tileY))==null)
 						currentLoadZone.getTileMap().setTile(new Point(tileX, tileY), Tile.getBasicTile());
-					System.out.println(currentLoadZone);
-					System.out.println(currentLoadZone.getTileMap());
-					System.out.println(currentLoadZone.getTileMap().getTile(new Point(tileX,tileY)));
-					System.out.println(currentLoadZone.getTileMap().getTile(new Point(tileX,tileY)).getDecorations());
-				currentLoadZone.getTileMap().addDecoration(new Point(tileX, tileY), new Decoration(tileX,tileY,imageName));
+				currentLoadZone.getTileMap().addDecoration(new Point(tileX, tileY), new DecorationOld(tileX,tileY,imageName));
 				}
 			}
 		});

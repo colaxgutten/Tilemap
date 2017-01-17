@@ -15,25 +15,25 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class DecorationMap {
-	private Map<Point, Decoration> decorations = new HashMap<>();
+	private Map<Point, DecorationOld> decorations = new HashMap<>();
 	private Point selected;
 	
-	public void add(Point pos, Decoration dec) {
+	public void add(Point pos, DecorationOld dec) {
 		decorations.put(pos, dec);
 	}
 	
-	public Map<Point, Decoration> getAll() {
+	public Map<Point, DecorationOld> getAll() {
 		return decorations;
 	}
 	
 	public void draw(Canvas canvas, Point canvasPos, int tileSize, HashMap<String,Image> images) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
-		List<Map.Entry<Point, Decoration>> entries = new ArrayList<>(decorations.entrySet());
+		List<Map.Entry<Point, DecorationOld>> entries = new ArrayList<>(decorations.entrySet());
 		
-		Collections.sort(entries, new Comparator<Map.Entry<Point, Decoration>>() {
+		Collections.sort(entries, new Comparator<Map.Entry<Point, DecorationOld>>() {
 			@Override
-			public int compare(Map.Entry<Point, Decoration> o1, Map.Entry<Point, Decoration> o2) {
+			public int compare(Map.Entry<Point, DecorationOld> o1, Map.Entry<Point, DecorationOld> o2) {
 				if (o1.getKey().getY()<o2.getKey().getY())
 					return -1;
 				if (o1.getKey().getY()>o2.getKey().getY())
@@ -45,8 +45,8 @@ public class DecorationMap {
 				return 0;
 			}
 		});
-		for(Map.Entry<Point, Decoration> entry : entries) {
-			Decoration dec = entry.getValue();
+		for(Map.Entry<Point, DecorationOld> entry : entries) {
+			DecorationOld dec = entry.getValue();
 			Point pos = entry.getKey();
 			
 			Image image = images.get(dec.getImageName());
@@ -69,8 +69,8 @@ public class DecorationMap {
 	public boolean selectDecorationAt(double x, double y, Point canvasPos, int tileSize, Map<String, Image> images) {
 		Point newSelection = null;
 		
-		for(Map.Entry<Point, Decoration> entry : decorations.entrySet()) {
-			Decoration dec = entry.getValue();
+		for(Map.Entry<Point, DecorationOld> entry : decorations.entrySet()) {
+			DecorationOld dec = entry.getValue();
 			Point pos = entry.getKey();
 			
 			Image image = images.get(dec.getImageName());
@@ -95,7 +95,7 @@ public class DecorationMap {
 		return false;
 	}
 	
-	public Decoration getSelected() {
+	public DecorationOld getSelected() {
 		return decorations.get(selected);
 	}
 	
@@ -111,7 +111,7 @@ public class DecorationMap {
 	
 	public String toString() {
 		String save = "";
-		for (Decoration dec : decorations.values()){
+		for (DecorationOld dec : decorations.values()){
 			save += dec.toString() + " ";
 		}
 		return save;

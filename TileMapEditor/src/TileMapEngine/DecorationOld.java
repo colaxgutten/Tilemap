@@ -1,7 +1,7 @@
 package TileMapEngine;
 import java.util.Locale;
 
-public class Decoration {
+public class DecorationOld {
 	private String imageName;
 	private int xPos;
 	private int yPos;
@@ -9,13 +9,13 @@ public class Decoration {
 	private double xAdjust;
 	private double yAdjust;
 
-	public Decoration(int xPos, int yPos, String imageName) {
+	public DecorationOld(int xPos, int yPos, String imageName) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.imageName = imageName;
 	}
 
-	public Decoration(int xPos, int yPos, double xAdjust, double yAdjust, String imageName) {
+	public DecorationOld(int xPos, int yPos, double xAdjust, double yAdjust, String imageName) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.xAdjust = xAdjust;

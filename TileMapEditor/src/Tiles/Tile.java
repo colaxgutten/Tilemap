@@ -2,7 +2,7 @@ package Tiles;
 import java.util.ArrayList;
 import java.util.List;
 
-import TileMapEngine.Decoration;
+import TileMapEngine.DecorationOld;
 import TileMapEngine.Player;
 
 public class Tile implements TileInterface {
@@ -11,7 +11,7 @@ public class Tile implements TileInterface {
 	private int toolId=0;
 	boolean solid;
 	
-	private List<Decoration> decorations;
+	private List<DecorationOld> decorations;
 	
 	public Tile(String tileImageName, boolean solid) {
 		this.tileImageName=tileImageName;
@@ -27,7 +27,7 @@ public class Tile implements TileInterface {
 		this.params = params;
 		this.tileImageName=tileImageName;
 		this.solid=solid;
-		decorations = new ArrayList<Decoration>();
+		decorations = new ArrayList<DecorationOld>();
 	}
 	
 	public void setTileImageName(String name){
@@ -38,7 +38,7 @@ public class Tile implements TileInterface {
 		return tileImageName;
 	}
 	
-	public List<Decoration> getDecorations() {
+	public List<DecorationOld> getDecorations() {
 		return decorations;
 	}
 	
@@ -62,7 +62,7 @@ public class Tile implements TileInterface {
 	
 	public String getDecorationSaveString() {
 		String s = "";
-		for(Decoration dec : decorations) {
+		for(DecorationOld dec : decorations) {
 			s += dec.toString() + " ";
 		}
 		return s;
@@ -89,6 +89,11 @@ public class Tile implements TileInterface {
 		default:
 			return new Tile(params, imageName, solid);
 		}
+	}
+	
+	public void setParam(String s,int pos){
+		if (pos<params.length&&pos>=0)
+		params[pos]=s;
 	}
 	
 	public String getParamString() {

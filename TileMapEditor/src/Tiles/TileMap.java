@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import TileMapEngine.Decoration;
+import TileMapEngine.DecorationOld;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -41,7 +41,7 @@ public class TileMap {
 		return grid.size();
 	}
 	
-	public void addDecoration(Point pos, Decoration dec) {
+	public void addDecoration(Point pos, DecorationOld dec) {
 		if(grid.get(pos) == null) {
 			grid.put(pos, Tile.getBasicTile());
 		}
@@ -87,7 +87,7 @@ public class TileMap {
 		for(int i = canvasPos.x; i < canvas.getWidth() / tileSize + canvasPos.x; i++) {
 			for(int j = canvasPos.y; j < canvas.getHeight() / tileSize + canvasPos.y; j++) {
 				for(int k = 0; getTile(new Point(i, j)).getDecorations()!=null && k < getTile(new Point(i, j)).getDecorations().size(); ++k) {
-			Decoration dec = getTile(new Point(i, j)).getDecorations().get(k);
+			DecorationOld dec = getTile(new Point(i, j)).getDecorations().get(k);
 			Image decImage = decImages.get(dec.getImageName());
 			if(decImage != null) {
 			double scalevalue= tileSize/48.0;
@@ -138,7 +138,7 @@ public class TileMap {
 			Tile tile = entry.getValue();
 			Point pos = entry.getKey();
 			for(int i = 0; i < tile.getDecorations().size(); ++i) {
-				Decoration dec = tile.getDecorations().get(i);
+				DecorationOld dec = tile.getDecorations().get(i);
 				Image image = images.get(dec.getImageName());
 				double scalevalue= tileSize/48.0;
 				double topLeftX = (pos.getX() - canvasPos.x) * tileSize - image.getWidth()/2*scalevalue + (tileSize/2);
@@ -164,7 +164,7 @@ public class TileMap {
 		return false;
 	}
 	
-	public Decoration getSelectedDec() {
+	public DecorationOld getSelectedDec() {
 		return grid.get(selectedDecTile).getDecorations().get(selectedDecIndex);
 	}
 	
@@ -174,6 +174,7 @@ public class TileMap {
 	
 	public void deleteSelectedDec() {
 		if(selectedDecTile != null) {
+			if (grid.get(selectedDecTile)!=null && grid.get(selectedDecTile).getDecorations().size()>selectedDecIndex )
 			grid.get(selectedDecTile).getDecorations().remove(selectedDecIndex);
 		}
 	}

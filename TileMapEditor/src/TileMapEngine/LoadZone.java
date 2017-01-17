@@ -88,10 +88,11 @@ public class LoadZone {
 				double xAdjust = Double.valueOf(decArray[2]);
 				double yAdjust = Double.valueOf(decArray[3]);
 				
-				Decoration dec = new Decoration(posX, posY, xAdjust, yAdjust, decArray[4]);
+				DecorationOld dec = new DecorationOld(posX, posY, xAdjust, yAdjust, decArray[4]);
 				
 				tileMap.addDecoration(new Point(posX, posY), dec);
 			}
+			
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
