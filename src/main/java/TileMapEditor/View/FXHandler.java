@@ -34,7 +34,6 @@ public class FXHandler {
 	private HBox leftSideBox;
 	private VBox rightSideBox;
 	private VBox leftContainer;
-	private Canvas center;
 	private String[] tileTypes = {"DoorTile","Tile","ChestTile"};
 
 	int tilesToBePainted = 16;
@@ -53,11 +52,11 @@ public class FXHandler {
 	TextField eventInput;
 	TextField webImages;
 	ListView<Image> webImageListView;
-	ComboBox tileTypesForEventInput;
+	ComboBox<String> tileTypesForEventInput;
 	ObservableList<String> saveStrings;
 	ObservableList<String> searchStrings;
-	ComboBox savedFiles;
-	ComboBox imageSelection;
+	ComboBox<String> savedFiles;
+	ComboBox<String> imageSelection;
 	String currentSaveFile = "";
 	Label zoomValueLabel;
 	ScrollBar canvasZoom;
@@ -107,7 +106,7 @@ public class FXHandler {
 	public void loadRightSide(String saveFolder) {
 		saveStrings = FXCollections.observableArrayList();
 		saveStrings.addAll(loadSaveStrings(new File(saveFolder)));
-		savedFiles = new ComboBox(saveStrings);
+		savedFiles = new ComboBox<String>(saveStrings);
 		cordinates = new Label();
 		
 		rightSideBox = new VBox();
@@ -146,8 +145,8 @@ public class FXHandler {
 		});
 		
 
-		rightSideBox.setMargin(save, new Insets(20, 20, 20, 0));
-		rightSideBox.setMargin(zoomValueLabel, new Insets(0, 0, 20, 0));
+		VBox.setMargin(save, new Insets(20, 20, 20, 0));
+		VBox.setMargin(zoomValueLabel, new Insets(0, 0, 20, 0));
 		rightSideBox.getChildren().add(canvasZoom);
 		rightSideBox.getChildren().add(zoomValueLabel);
 		rightSideBox.getChildren().add(saveName);
@@ -162,7 +161,7 @@ public class FXHandler {
 		leftContainer = new VBox();
 		eventInput = new TextField();
 		decorationSlider = new Slider();
-		tileTypesForEventInput = new ComboBox();
+		tileTypesForEventInput = new ComboBox<String>();
 		tileTypesForEventInput.getItems().addAll(tileTypes);
 		webImages=new TextField();
 		webImageListView = new ListView<Image>();
@@ -191,7 +190,7 @@ public class FXHandler {
 			}
 		});
 		
-		imageSelection = new ComboBox();
+		imageSelection = new ComboBox<String>();
 		imageSelection.getItems().add("tiles");
 		imageSelection.getItems().add("decorations");
 		imageSelection.getSelectionModel().select(0);
@@ -214,7 +213,7 @@ public class FXHandler {
 		});
 		
 		imageSelection.valueProperty().addListener(new ChangeListener<String>() {
-	        @Override public void changed(ObservableValue ov, String t, String t1) {
+	        @Override public void changed(ObservableValue<? extends String> ov, String t, String t1) {
 	          if (t1.equals("tiles")){
 	        	  listImages.getItems().clear();
 	        	  listImages.getItems().addAll(tiles.keySet());
@@ -313,6 +312,7 @@ public class FXHandler {
 		leftContainer.getChildren().add(webImageListView);
 	}
 
+	/*
 	private void copyOfStrings(ObservableList<String> stringsToCopy, ObservableList<String> saveStrings2) {
 		saveStrings2.clear();
 		for (String s : stringsToCopy){
@@ -320,6 +320,7 @@ public class FXHandler {
 				saveStrings2.add(s);
 		}
 	}
+	*/
 
 	private void setCanvasEvents(Canvas canvas) {
 		canvas.setOnMouseMoved(e -> {
@@ -426,6 +427,9 @@ public class FXHandler {
 					break;
 				case DELETE:
 					currentLoadZone.getTileMap().deleteSelectedDec();
+				default:
+					System.out.println(event.getCode());
+					break;
 				}
 			}
 
