@@ -1,9 +1,11 @@
-package TileMapEditor.TileMapEngine;
+package TileMapEditor.View;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import TileMapEditor.TileMapEngine.Decoration;
+import TileMapEditor.TileMapEngine.LoadZone;
 import TileMapEditor.Tiles.Tile;
 import TileMapEditor.TilesFromWeb.ImageReaderFromOpenArt;
 import javafx.beans.value.ChangeListener;

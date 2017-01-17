@@ -2,6 +2,7 @@ package TileMapEditor.TileMapEngine;
 import java.io.File;
 import java.util.HashMap;
 
+import TileMapEditor.View.FXHandler;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.image.Image;
