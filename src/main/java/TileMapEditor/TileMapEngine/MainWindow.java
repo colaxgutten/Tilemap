@@ -38,23 +38,13 @@ public class MainWindow extends Application {
 			currentLoadZone.loadFromFile(saveFolder+"\\"+"saveFile.txt");
 		}
 
-		ImageLoader il = new ImageLoader();
-		il.loadFolderTiles(tileFolder);
-		il.loadDecorations(decorationFolder);
-		tiles = il.getTiles();
-		decorations = il.getDecorations();
-
 		window = primaryStage;
 		window.setTitle("MapEditor");
 		window.setWidth(mapWidth);
 		window.setHeight(mapHeight);
 		
 		FXHandler handler = new FXHandler(currentLoadZone, window);
-		handler.loadLeftSide(tiles,decorations);
-		handler.loadRightSide(saveFolder);
-		handler.loadCanvas();
-		handler.setup();
-		
+
 		renderTimer = System.nanoTime();
 		new AnimationTimer() {
 
