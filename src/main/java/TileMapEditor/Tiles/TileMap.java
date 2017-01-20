@@ -167,9 +167,14 @@ public class TileMap {
 	}
 	
 	public void deleteSelectedDec() {
-		if(selectedDecTile != null) {
-			grid.get(selectedDecTile).getDecorations().remove(selectedDecIndex);
-		}
+		if(selectedDecTile == null)
+			return;
+		
+		if(grid.get(selectedDecTile).getDecorations().size() <= selectedDecIndex)
+			return;
+			
+		
+		grid.get(selectedDecTile).getDecorations().remove(selectedDecIndex);
 	}
 	
 	public static TileMap loadFromFile(File file) {
