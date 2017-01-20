@@ -45,7 +45,7 @@ public class TileMenu extends VBox {
 	final private HashMap<String, Image> decorations;
 	final private HashMap<String, Image> tiles;
 	final private SearchTree<String> searchTree = new SearchTree<>();
-	
+
 	private ArrayList<Image> webImagesLoaded = new ArrayList<>();
 	private LoadZone currentLoadZone;
 	private String prevSelectedListViewItemIndex = "";
@@ -88,18 +88,18 @@ public class TileMenu extends VBox {
 
 		hbox.getChildren().add(listImages);
 		hbox.getChildren().add(propertiesBox);
-		
+
 		getChildren().add(searchBarForTiles);
 		getChildren().add(imageSelection);
 		getChildren().add(hbox);
 		getChildren().add(webImages);
 		getChildren().add(webImageListView);
 	}
-	
+
 	private void setupSearchTree() {
 		System.out.println("tiles size: " + tiles.keySet().size());
-		
-		for(String s : tiles.keySet())
+
+		for (String s : tiles.keySet())
 			searchTree.put(s, s);
 	}
 
@@ -151,7 +151,7 @@ public class TileMenu extends VBox {
 				rightClickSelectedItem = prevSelectedListViewItemIndex;
 			}
 		});
-		
+
 		// sets value of selected item with either left or right click
 		// click(working as left and right click key-binding)
 		// makes the listView draw images instead of objects in text form
@@ -216,12 +216,11 @@ public class TileMenu extends VBox {
 			}
 		});
 	}
-	
+
 	public ChangeListener<String> getSearchBarEvent() {
-		return ( (o, ol, ne) -> {
-			
+		return ((o, ol, ne) -> {
 			ArrayList<String> list = (ArrayList<String>) searchTree.searchAll(ne);
-			
+
 			listImages.getItems().clear();
 			listImages.getItems().addAll(list);
 		});
@@ -234,11 +233,11 @@ public class TileMenu extends VBox {
 	public String getImageSelectionValue() {
 		return imageSelection.getValue();
 	}
-	
+
 	public String getLeftClickSelectedItem() {
 		return leftClickSelectedItem;
 	}
-	
+
 	public String getRightClickSelectedItem() {
 		return rightClickSelectedItem;
 	}
