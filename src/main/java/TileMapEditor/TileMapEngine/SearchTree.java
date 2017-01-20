@@ -54,10 +54,8 @@ public class SearchTree<Value> {
 		if (x.right != null)
 			getAllChars(x.right, list);
 		
-		if(x.val != null) {
+		if(x.val != null)
 			list.add(x.val);
-			System.out.println("Added: " + x.val);
-		}
 			
 	}
 
