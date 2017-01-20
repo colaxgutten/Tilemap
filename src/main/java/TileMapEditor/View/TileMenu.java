@@ -5,12 +5,10 @@ import java.util.HashMap;
 
 import TileMapEditor.TileMapEngine.Decoration;
 import TileMapEditor.TileMapEngine.LoadZone;
+import TileMapEditor.TileMapEngine.SearchTree;
 import TileMapEditor.TilesFromWeb.ImageReaderFromOpenArt;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -38,7 +36,6 @@ public class TileMenu extends VBox {
 	final private double decorationSliderMaxValue = 5;
 	final private TextField webImages = new TextField();
 	final private ListView<Image> webImageListView = new ListView<>();
-	final private ObservableList<String> searchStrings = FXCollections.observableArrayList();
 	final private TextField searchBarForTiles = new TextField();
 	final private ImageReaderFromOpenArt imgr = new ImageReaderFromOpenArt();
 	final private CheckBox solid = new CheckBox("Solid");
@@ -47,6 +44,7 @@ public class TileMenu extends VBox {
 	final private ComboBox<String> tileTypesForEventInput = new ComboBox<>();
 	final private HashMap<String, Image> decorations;
 	final private HashMap<String, Image> tiles;
+	final private SearchTree<String> searchTree = new SearchTree<>();
 	
 	private ArrayList<Image> webImagesLoaded = new ArrayList<>();
 	private LoadZone currentLoadZone;
@@ -63,7 +61,8 @@ public class TileMenu extends VBox {
 
 	private void initialize() {
 		tileTypesForEventInput.getItems().addAll(tileTypes);
-		searchBarForTiles.setOnAction(getSearchBarEvent());
+		setupSearchTree();
+		searchBarForTiles.textProperty().addListener(getSearchBarEvent());
 
 		decorationSlider.setMax(decorationSliderMaxValue);
 		decorationSlider.setMin(0);
@@ -95,6 +94,13 @@ public class TileMenu extends VBox {
 		getChildren().add(hbox);
 		getChildren().add(webImages);
 		getChildren().add(webImageListView);
+	}
+	
+	private void setupSearchTree() {
+		System.out.println("tiles size: " + tiles.keySet().size());
+		
+		for(String s : tiles.keySet())
+			searchTree.put(s, s);
 	}
 
 	private void setListeners() {
@@ -210,27 +216,14 @@ public class TileMenu extends VBox {
 			}
 		});
 	}
-
-	public EventHandler<ActionEvent> getSearchBarEvent() {
-		return (e -> {
-			TextField tf = (TextField) e.getSource();
-			String s = tf.getText();
-			if (s.length() > 0) {
-				searchStrings.clear();
-				listImages.getItems().clear();
-				listImages.getItems().addAll(tiles.keySet());
-				for (String search : listImages.getItems()) {
-					if (search.contains(s)) {
-						searchStrings.add(search);
-					}
-				}
-				listImages.getItems().clear();
-				listImages.getItems().addAll(searchStrings);
-
-			} else {
-				listImages.getItems().clear();
-				listImages.getItems().addAll(tiles.keySet());
-			}
+	
+	public ChangeListener<String> getSearchBarEvent() {
+		return ( (o, ol, ne) -> {
+			
+			ArrayList<String> list = (ArrayList<String>) searchTree.searchAll(ne);
+			
+			listImages.getItems().clear();
+			listImages.getItems().addAll(list);
 		});
 	}
 
