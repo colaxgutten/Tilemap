@@ -1,17 +1,14 @@
 package TileMapEditor.TileMapEngine;
 import java.awt.Point;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 import TileMapEditor.Tiles.Tile;
 import TileMapEditor.Tiles.TileMap;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+
+import javax.jnlp.FileSaveService;
 
 public class LoadZone {
 	private TileMap tileMap = new TileMap();
@@ -42,9 +39,13 @@ public class LoadZone {
 	}
 	
 	public void loadFromFile(String fileName) {
-		System.out.println("Denne blir kallt");
-		File file = new File(fileName);
-		
+		File file = null;
+		try {
+			file = SaveFileHandler.getInstance().getFile(fileName);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		try(FileReader fr = new FileReader(file)) {
 			BufferedReader br = new BufferedReader(fr);
 			
@@ -99,31 +100,9 @@ public class LoadZone {
 		}
 	}
 
-	/**
-	 * Lager en tekst ut av tillemappen for å lagre slik:
-	 * xpos,ypos,tileImageId,solid 
-	 * med mellomrom som skilletegn mellom hver tile som skal lagres.
-	 * @return save tekst.
-	 */
-	public void saveToFile(String fileName) {
-		File file = new File(fileName);
 
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			FileWriter fw = new FileWriter(file);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(tileMap.toString());
-			bw.newLine();
-			bw.write(tileMap.decString());
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void saveToFile(String fileName) {
+		System.out.println("Denne metoden blir kalt");
+		SaveFileHandler.getInstance().writeFile(fileName, this.tileMap);
 	}
 }

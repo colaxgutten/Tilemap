@@ -32,11 +32,12 @@ public class MainWindow extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		currentLoadZone = new LoadZone();
+		/* TODO: Do we still need this?
 		File file = new File(saveFolder+"\\"+"saveFile.txt");
 		if (file.exists()) {
 			System.out.println("file exists! yay");
 			currentLoadZone.loadFromFile(saveFolder+"\\"+"saveFile.txt");
-		}
+		}*/
 
 		window = primaryStage;
 		window.setTitle("MapEditor");
