@@ -1,5 +1,4 @@
 package TileMapEditor.TileMapEngine;
-import java.io.File;
 import java.util.HashMap;
 
 import TileMapEditor.View.FXHandler;
