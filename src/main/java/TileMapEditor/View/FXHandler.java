@@ -158,8 +158,10 @@ public class FXHandler {
 				if(currentLoadZone.getTileMap().getSelectedDec() == null)
 					return;
 				
-				currentLoadZone.getTileMap().getSelectedDec().setxPos(x);
-				currentLoadZone.getTileMap().getSelectedDec().setyPos(y);
+//				currentLoadZone.getTileMap().getSelectedDec().setxPos(x);
+//				currentLoadZone.getTileMap().getSelectedDec().setyPos(y);
+				// TODO: Reactivate this once the Hashmap<Point, Decoration> has been changed!
+				// Until change takes effect this functionality is broke, though implemented.
 				
 				return;
 			}
