@@ -15,7 +15,7 @@ import javafx.scene.image.Image;
 
 public class LoadZone {
 	private TileMap tileMap = new TileMap();
-	private DecorationMap decMap = new DecorationMap();
+//	private DecorationMap decMap = new DecorationMap(); Unused?
 	
 	public TileMap getTileMap() {
 		return tileMap;
@@ -25,6 +25,8 @@ public class LoadZone {
 		this.tileMap = tileMap;
 	}
 
+	/*
+	 * Unused?
 	public DecorationMap getDecMap() {
 		return decMap;
 	}
@@ -32,12 +34,13 @@ public class LoadZone {
 	public void setDecMap(DecorationMap decMap) {
 		this.decMap = decMap;
 	}
+	*/
 	
 	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> tiles, HashMap<String, Image> decorations) {
 		tileMap.draw(canvas, pos, tileSize, showSolid, tiles, decorations);
-		decMap.draw(canvas, pos, tileSize, decorations);
+//		decMap.draw(canvas, pos, tileSize, decorations);
 	}
-
+	
 	public void loadFromFile(String fileName) {
 		System.out.println("Denne blir kallt");
 		File file = new File(fileName);
@@ -46,7 +49,7 @@ public class LoadZone {
 			BufferedReader br = new BufferedReader(fr);
 			
 			tileMap = new TileMap();
-			decMap = new DecorationMap();
+//			decMap = new DecorationMap(); Unused?
 
 			String tileLine = br.readLine();
 			
