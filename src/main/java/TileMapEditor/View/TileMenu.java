@@ -97,8 +97,6 @@ public class TileMenu extends VBox {
 	}
 
 	private void setupSearchTree() {
-		System.out.println("tiles size: " + tiles.keySet().size());
-
 		for (String s : tiles.keySet())
 			searchTree.put(s, s);
 	}
