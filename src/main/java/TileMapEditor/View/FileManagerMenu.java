@@ -1,8 +1,5 @@
 package TileMapEditor.View;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import TileMapEditor.TileMapEngine.LoadZone;
 import TileMapEditor.TileMapEngine.SaveFileHandler;
 import javafx.beans.value.ChangeListener;
