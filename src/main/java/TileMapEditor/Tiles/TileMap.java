@@ -16,7 +16,8 @@ public class TileMap {
 	
 	private Map<Point, Tile> grid = new HashMap<>();
 	private Point selected;
-	private Point selectedDecTile;
+	private Tile selectedDecTile;
+	private Decoration selectedDec;
 	private int selectedDecIndex;
 
 	public void setTile(Point pos, Tile tile){
@@ -90,7 +91,7 @@ public class TileMap {
 			
 			
 				gc.drawImage(decImage, drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
-				if(decIsSelected(new Point(i, j), k)) {
+				if(selectedDecTile != null) {
 					gc.setStroke(Color.BLUE);
 					gc.setLineWidth(2);
 					gc.strokeRect(drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
@@ -125,8 +126,10 @@ public class TileMap {
 	}
 	
 	public boolean selectDecorationAt(double x, double y, Point canvasPos, int tileSize, Map<String, Image> images) {
-		Point newSelection = null;
 		int newIndex = 0;
+		selectedDec = null;
+		selectedDecTile = null;
+		selectedDecIndex = 0;
 		
 		for(Map.Entry<Point, Tile> entry : grid.entrySet()) {
 			Tile tile = entry.getValue();
@@ -141,18 +144,14 @@ public class TileMap {
 				double height = image.getHeight();
 				
 				if(x >= topLeftX && x <= topLeftX + width && y >= topLeftY && y <= topLeftY + height) {
-					if((newSelection == null || pos.getY() > newSelection.getY())) {
-						newSelection = pos;
-						newIndex = i;
+					if(selectedDec == null) {
+						selectedDec = dec;
+						selectedDecTile = tile;
+						selectedDecIndex = newIndex;
+						return true;
 					}
 				}
 			}
-		}
-		
-		if(newSelection != null) {
-			selectedDecTile = newSelection;
-			selectedDecIndex = newIndex;
-			return true;
 		}
 		
 		return false;
@@ -175,11 +174,12 @@ public class TileMap {
 		if(selectedDecTile == null)
 			return;
 		
-		if(grid.get(selectedDecTile).getDecorations().size() <= selectedDecIndex)
+		if(selectedDecTile.getDecorations().size() <= selectedDecIndex)
 			return;
 			
 		
-		grid.get(selectedDecTile).getDecorations().remove(selectedDecIndex);
+		selectedDecTile.getDecorations().remove(selectedDecIndex);
+		selectedDecTile = null;
 	}
 	
 	public static TileMap loadFromFile(File file) {
