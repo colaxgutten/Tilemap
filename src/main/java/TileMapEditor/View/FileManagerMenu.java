@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import TileMapEditor.TileMapEngine.LoadZone;
+import TileMapEditor.TileMapEngine.SaveFileHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,7 +21,6 @@ public class FileManagerMenu extends VBox {
 	
 	final private ObservableList<String> saveStrings = FXCollections.observableArrayList();
 	final private ComboBox<String> savedFiles = new ComboBox<String>(saveStrings);
-	final private String saveFolder = getClass().getResource("/saveFiles").getFile();
 	final private TextField saveName = new TextField();
 	final private Label zoomValueLabel = new Label();
 	final private ScrollBar canvasZoom = new ScrollBar();
@@ -44,20 +44,19 @@ public class FileManagerMenu extends VBox {
 
 		save.setOnAction(e -> {
 			String s = saveName.getText() + ".txt";
-			currentLoadZone.saveToFile(saveFolder + "\\" + s);
+			currentLoadZone.saveToFile(s);
 			if (!savedFiles.getItems().contains(s))
 				savedFiles.getItems().add(s);
 		});
 		load.setOnAction(e -> {
 			String saveToLoad = (String) savedFiles.getSelectionModel().getSelectedItem();
-			currentLoadZone.loadFromFile(saveFolder + "\\" + saveToLoad);
-//			currentSaveFile = saveToLoad; TODO: UNUSED VARIABLE!
+			currentLoadZone.loadFromFile(saveToLoad);
 			saveName.setText(saveToLoad.substring(0, saveToLoad.length() - 4));
 		});
 		
 		VBox.setMargin(save, new Insets(20, 20, 20, 0));
 		VBox.setMargin(zoomValueLabel, new Insets(0, 0, 20, 0));
-		saveStrings.addAll(loadSaveStrings(new File(saveFolder)));
+		saveStrings.addAll(SaveFileHandler.getInstance().getFiles());
 		
 		canvasZoom.setMax(96);
 		canvasZoom.setMin(12);
@@ -80,7 +79,8 @@ public class FileManagerMenu extends VBox {
 		getChildren().add(cordinates);
 	}
 	
-	
+
+	/*
 	private ArrayList<String> loadSaveStrings(final File folder) {
 		ArrayList<String> savedFileStrings = new ArrayList<String>();
 		for (final File fileEntry : folder.listFiles()) {
@@ -94,7 +94,7 @@ public class FileManagerMenu extends VBox {
 			}
 		}
 		return savedFileStrings;
-	}
+	} */
 	
 	public void setCoordinatesText(String s) {
 		cordinates.setText(s);
