@@ -107,6 +107,9 @@ public class FXHandler {
 			double y = e.getY();
 
 			if (leftSideBox.deleteDecIsSelected()) {
+				if(currentLoadZone.getTileMap().getSelectedDec() != null)
+				System.out.println(currentLoadZone.getTileMap().getSelectedDec().getxAdjust() + ", " + currentLoadZone.getTileMap().getSelectedDec().getyAdjust() + " & " + currentLoadZone.getTileMap().getSelectedDec().getxPos() + ", " + currentLoadZone.getTileMap().getSelectedDec().getyPos());
+				
 				currentLoadZone.getTileMap().selectDecorationAt(x, y, new Point(canvasXpos, canvasYpos), rightSideBox.getTileSize(),
 						decorations);
 				return;
@@ -148,11 +151,19 @@ public class FXHandler {
 		});
 
 		canvas.setOnMouseDragged(e -> {
-			if (leftSideBox.deleteDecIsSelected())
-				return;
-
 			int x = (int) (Math.floor(e.getX()) / rightSideBox.getTileSize()) + canvasXpos;
 			int y = (int) (Math.floor(e.getY()) / rightSideBox.getTileSize()) + canvasYpos;
+			
+			if (leftSideBox.deleteDecIsSelected()) {
+				if(currentLoadZone.getTileMap().getSelectedDec() == null)
+					return;
+				
+				currentLoadZone.getTileMap().getSelectedDec().setxPos(x);
+				currentLoadZone.getTileMap().getSelectedDec().setyPos(y);
+				
+				return;
+			}
+
 			String imageName = "";
 
 			if (e.getButton() == MouseButton.PRIMARY) {

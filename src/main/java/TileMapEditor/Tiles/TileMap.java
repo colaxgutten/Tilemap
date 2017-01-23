@@ -158,12 +158,14 @@ public class TileMap {
 	}
 	
 	public Decoration getSelectedDec() {
-		Tile t = grid.get(selectedDecTile);
+//		Tile t = grid.get(new Point(selectedDec.getxPos(), selectedDec.getyPos()));
 		
-		if(t == null)
-			return null;
+//		if(t == null)
+//			return null;
 		
-		return t.getDecorations().get(selectedDecIndex);
+//		return t.getDecorations().get(selectedDecIndex);
+		
+		return selectedDec;
 	}
 	
 	public boolean decIsSelected(Point pos, int index) {
