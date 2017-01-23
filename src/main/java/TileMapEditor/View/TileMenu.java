@@ -78,6 +78,7 @@ public class TileMenu extends VBox {
 
 		listImages.getItems().addAll(tiles.keySet());
 		listImages.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listImages.setStyle("-fx-selection-bar-non-focused: #ACCEF7;");
 		listImages.setPrefWidth(100);
 
 		imageSelection.getItems().add("tiles");
