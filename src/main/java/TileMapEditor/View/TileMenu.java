@@ -40,7 +40,7 @@ public class TileMenu extends VBox {
 	final private ImageReaderFromOpenArt imgr = new ImageReaderFromOpenArt();
 	final private CheckBox solid = new CheckBox("Solid");
 	final private CheckBox showSolid = new CheckBox("Show solid");
-	final private CheckBox deleteDec = new CheckBox("Delete decoration");
+	final private CheckBox deleteDec = new CheckBox("Select decoration");
 	final private ComboBox<String> tileTypesForEventInput = new ComboBox<>();
 	final private HashMap<String, Image> decorations;
 	final private HashMap<String, Image> tiles;
