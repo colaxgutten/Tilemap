@@ -8,7 +8,7 @@ import TileMapEditor.Tiles.TileMap;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
-import javax.jnlp.FileSaveService;
+//import javafx.jnlp.FileSaveService;
 
 public class LoadZone {
 	private TileMap tileMap = new TileMap();
