@@ -40,11 +40,12 @@ public class TileMenu extends VBox {
 	final private ImageReaderFromOpenArt imgr = new ImageReaderFromOpenArt();
 	final private CheckBox solid = new CheckBox("Solid");
 	final private CheckBox showSolid = new CheckBox("Show solid");
-	final private CheckBox deleteDec = new CheckBox("Delete decoration");
+	final private CheckBox deleteDec = new CheckBox("Select decoration");
 	final private ComboBox<String> tileTypesForEventInput = new ComboBox<>();
 	final private HashMap<String, Image> decorations;
 	final private HashMap<String, Image> tiles;
-	final private SearchTree<String> searchTree = new SearchTree<>();
+	final private SearchTree<String> searchTreeTiles = new SearchTree<>();
+	final private SearchTree<String> searchTreeDecorations = new SearchTree<>();
 
 	private ArrayList<Image> webImagesLoaded = new ArrayList<>();
 	private LoadZone currentLoadZone;
@@ -97,10 +98,11 @@ public class TileMenu extends VBox {
 	}
 
 	private void setupSearchTree() {
-		System.out.println("tiles size: " + tiles.keySet().size());
-
 		for (String s : tiles.keySet())
-			searchTree.put(s, s);
+			searchTreeTiles.put(s, s);
+		
+		for (String s : decorations.keySet())
+			searchTreeDecorations.put(s, s);
 	}
 
 	private void setListeners() {
@@ -219,11 +221,22 @@ public class TileMenu extends VBox {
 
 	public ChangeListener<String> getSearchBarEvent() {
 		return ((o, ol, ne) -> {
-			ArrayList<String> list = (ArrayList<String>) searchTree.searchAll(ne);
+			ArrayList<String> list =  searchTileOrDec(ne);
 
 			listImages.getItems().clear();
 			listImages.getItems().addAll(list);
 		});
+	}
+	
+	private ArrayList<String> searchTileOrDec(String s) {
+		ArrayList<String> list = null;
+		String selected = imageSelection.getSelectionModel().getSelectedItem();
+			
+			if(selected.equals("tiles"))
+				list = (ArrayList<String>) searchTreeTiles.searchAll(s);
+			else if(selected.equals("decorations"))
+				list = (ArrayList<String>) searchTreeDecorations.searchAll(s);
+		return list;
 	}
 
 	public void addListImagesListener(ChangeListener<String> e) {
