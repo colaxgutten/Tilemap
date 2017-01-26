@@ -51,7 +51,7 @@ public class TileMap {
 		}
 	}
 	
-	public void draw(Canvas canvas, Point canvasPos, int tileSize, boolean showSolid, HashMap<String,Image> images, HashMap<String,Image> decImages) {
+	public void draw(Canvas canvas, Point canvasPos, int tileSize, boolean showSolid, HashMap<String,Image> tileImages, HashMap<String,Image> decorationImages) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
 		for(int i = canvasPos.x; i < canvas.getWidth() / tileSize + canvasPos.x; i++) {
@@ -59,10 +59,10 @@ public class TileMap {
 				Image image;
 				String imageName = getTile(new Point(i, j)).getTileImageId();
 				
-				if (images.get(imageName) == null || imageName == null){
-					image = images.get(DEFAULT_TILE);
+				if (tileImages.get(imageName) == null || imageName == null){
+					image = tileImages.get(DEFAULT_TILE);
 				} else {
-					image = images.get(imageName);
+					image = tileImages.get(imageName);
 				}
 				
 				if (showSolid && !getTile(new Point(i, j)).isSolid()) {
@@ -83,7 +83,7 @@ public class TileMap {
 			for(int j = canvasPos.y; j < canvas.getHeight() / tileSize + canvasPos.y; j++) {
 				for(int k = 0; getTile(new Point(i, j)).getDecorations()!=null && k < getTile(new Point(i, j)).getDecorations().size(); ++k) {
 			Decoration dec = getTile(new Point(i, j)).getDecorations().get(k);
-			Image decImage = decImages.get(dec.getImageName());
+			Image decImage = decorationImages.get(dec.getImageName());
 			if(decImage != null) {
 			double scalevalue= tileSize/48.0;
 			double drawPosX = (i - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
