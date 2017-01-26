@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import tileMapEditor.fxml.view.*?>
+
+<GameCanvas fx:controller="tileMapEditor.fxml.view.GameCanvas" height="720.0" width="720.0" focusTraversable="true" xmlns:fx="http://javafx.com/fxml/1" onMouseClicked="#stealFocus">
+	<!-- TODO Add Nodes -->
+</GameCanvas>
+

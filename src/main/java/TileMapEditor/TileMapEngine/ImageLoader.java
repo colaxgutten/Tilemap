@@ -6,31 +6,14 @@ import java.util.HashMap;
 import javafx.scene.image.Image;
 
 public class ImageLoader {
-	boolean loaded = false;
-	private HashMap<String,Image> tiles = new HashMap<String,Image>();
-	private HashMap<String,Image> decorations = new HashMap<String,Image>();
-	/*
-	private static ImageLoader instance;
-	
-	public static ImageLoader getInstance () {
-		if(instance == null) {
-			instance = new ImageLoader();
-		}
-		return instance;
-	}
-	
-	private ImageLoader() {}
-	*/
-	public void loadFolderTiles(String folderPath){
-		//final File folder = new File("D:\\Users\\legen\\Documents\\git\\Tilemap\\TileMapEditor\\images\\tileImages");
-		loadTiles(new File(folderPath));
-	}
 
-	public void loadTiles(final File folder){
-		System.out.println(folder.exists());
+	public static HashMap<String,Image> loadTiles(final String folderPath){
+		final HashMap<String,Image> tiles = new HashMap<String,Image>();
+		final File folder = new File(folderPath);
+		
 		for (final File fileEntry : folder.listFiles()){
 			if (fileEntry.isDirectory()){
-				loadTiles(fileEntry);
+				return loadTiles(fileEntry.getPath());
 			} else {
 				String name = "";
 				if (fileEntry.getName().endsWith("jpg") || fileEntry.getName().endsWith("png")){ 
@@ -46,15 +29,17 @@ public class ImageLoader {
 				}
 			}
 		}
-		loaded=true;
+		
+		return tiles;
 	}
 	
-	public void loadDecorations(String folderPath){
-		File folder = new File(folderPath);
+	public static HashMap<String,Image> loadDecorations(final String folderPath){
+		final HashMap<String,Image> decorations = new HashMap<String,Image>();
+		final File folder = new File(folderPath);
 		
 		for (final File fileEntry : folder.listFiles()){
 			if (fileEntry.isDirectory()){
-				loadTiles(fileEntry);
+				return loadDecorations(fileEntry.getPath());
 			} else {
 				String name = "";
 				if (fileEntry.getName().endsWith("jpg") || fileEntry.getName().endsWith("png")){
@@ -70,14 +55,7 @@ public class ImageLoader {
 				}
 			}
 		}
-	}
-	
-	public HashMap<String,Image> getDecorations() {
+		
 		return decorations;
-	}
-	
-	
-	public HashMap<String,Image> getTiles(){
-		return tiles;
 	}
 }

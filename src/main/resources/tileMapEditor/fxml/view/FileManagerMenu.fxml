@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import tileMapEditor.fxml.view.*?>
+
+
+<FileManagerMenu fx:controller="tileMapEditor.fxml.view.FileManagerMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Slider max="96.0" min="12.0" value="48.0" focusTraversable="false" />
+      <Label text="Tile Size: 48">
+         <padding>
+            <Insets bottom="20.0" />
+         </padding>
+      </Label>
+      <TextField focusTraversable="false" />
+      <Button mnemonicParsing="false" text="Save" focusTraversable="false" >
+         <VBox.margin>
+            <Insets bottom="20.0" right="20.0" top="20.0" />
+         </VBox.margin>
+      </Button>
+      <Button mnemonicParsing="false" text="Load" focusTraversable="false" />
+      <ComboBox prefWidth="150.0" focusTraversable="false" />
+      <Label fx:id="labelTileCoordinator" text="0,0" />
+   </children>
+</FileManagerMenu>

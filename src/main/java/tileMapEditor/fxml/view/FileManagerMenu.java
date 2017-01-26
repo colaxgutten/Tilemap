@@ -1,38 +1,24 @@
-package TileMapEditor.View;
+package tileMapEditor.fxml.view;
 
-import TileMapEditor.TileMapEngine.LoadZone;
-import TileMapEditor.TileMapEngine.SaveFileHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import tileMapEditor.fxml.model.FileManagerMenuModel;
 
 public class FileManagerMenu extends VBox {
 	
-	final private ObservableList<String> saveStrings = FXCollections.observableArrayList();
-	final private ComboBox<String> savedFiles = new ComboBox<String>(saveStrings);
-	final private TextField saveName = new TextField();
-	final private Label zoomValueLabel = new Label();
-	final private ScrollBar canvasZoom = new ScrollBar();
-	final private Label cordinates = new Label();
+	FileManagerMenuModel model = new FileManagerMenuModel();
+	
+	@FXML
+	Label labelTileCoordinator;
+	
 //	final private int tilesToBePainted = 16;
 	
-	private int tileSize = 48;
-	private LoadZone currentLoadZone;
+//	private LoadZone currentLoadZone;
 	
-	public FileManagerMenu(LoadZone currentLoadZone) {
-		this.currentLoadZone = currentLoadZone;
-		initialize();
-	}
-	
-	public void initialize() {
+		/*
 		Button save = new Button("Save");
 		Button load = new Button("Load");
 
@@ -74,7 +60,7 @@ public class FileManagerMenu extends VBox {
 		getChildren().add(load);
 		getChildren().add(savedFiles);
 		getChildren().add(cordinates);
-	}
+		*/
 	
 
 	/*
@@ -93,11 +79,29 @@ public class FileManagerMenu extends VBox {
 		return savedFileStrings;
 	} */
 	
-	public void setCoordinatesText(String s) {
-		cordinates.setText(s);
+	public void initializeListeners() {
+		model.getGameCanvasModel().getMouseXProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				System.out.println("CHANGEX");
+				model.setCoordinates(newValue + ", " + model.getGameCanvasModel().getCanvasYPos());
+			}
+		});
+		
+		model.getGameCanvasModel().getMouseYProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				System.out.println("CHANGEY");
+				model.setCoordinates(model.getGameCanvasModel().getCanvasXPos() + ", " + newValue);
+			}
+		});
 	}
 	
-	public int getTileSize() {
-		return tileSize;
+	public void setModel(FileManagerMenuModel model) {
+		this.model = model;
+	}
+	
+	public FileManagerMenuModel getModel() {
+		return model;
 	}
 }

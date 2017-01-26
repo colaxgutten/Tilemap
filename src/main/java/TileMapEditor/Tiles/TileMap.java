@@ -16,7 +16,7 @@ public class TileMap {
 	
 	private Map<Point, Tile> grid = new HashMap<>();
 	private Point selected;
-	private Tile selectedDecTile;
+	private Tile selectedTile;
 	private Decoration selectedDec;
 	private int selectedDecIndex;
 
@@ -51,84 +51,10 @@ public class TileMap {
 		}
 	}
 	
-	public void draw(Canvas canvas, Point canvasPos, int tileSize, boolean showSolid, HashMap<String,Image> tileImages, HashMap<String,Image> decorationImages) {
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		
-		for(int i = canvasPos.x; i < canvas.getWidth() / tileSize + canvasPos.x; i++) {
-			for(int j = canvasPos.y; j < canvas.getHeight() / tileSize + canvasPos.y; j++) {
-				Image image;
-				String imageName = getTile(new Point(i, j)).getTileImageId();
-				
-				if (tileImages.get(imageName) == null || imageName == null){
-					image = tileImages.get(DEFAULT_TILE);
-				} else {
-					image = tileImages.get(imageName);
-				}
-				
-				if (showSolid && !getTile(new Point(i, j)).isSolid()) {
-					gc.setGlobalAlpha(0.2);
-				}
-				gc.drawImage(image, (i - canvasPos.x) * tileSize, (j - canvasPos.y) * tileSize, tileSize, tileSize);
-				gc.setGlobalAlpha(1);
-				
-				if(selected != null && 	selected.equals(new Point(i, j))) {
-					gc.setLineWidth(2);
-					gc.setStroke(Color.BLUE);
-					gc.strokeRect((i - canvasPos.x) * tileSize, (j - canvasPos.y) * tileSize, tileSize, tileSize);
-				}
-			}
-		}
-		
-		for(int i = canvasPos.x; i < canvas.getWidth() / tileSize + canvasPos.x; i++) {
-			for(int j = canvasPos.y; j < canvas.getHeight() / tileSize + canvasPos.y; j++) {
-				for(int k = 0; getTile(new Point(i, j)).getDecorations()!=null && k < getTile(new Point(i, j)).getDecorations().size(); ++k) {
-			Decoration dec = getTile(new Point(i, j)).getDecorations().get(k);
-			Image decImage = decorationImages.get(dec.getImageName());
-			if(decImage != null) {
-			double scalevalue= tileSize/48.0;
-			double drawPosX = (i - canvasPos.x + dec.getxAdjust()) * tileSize - decImage.getWidth()/2*scalevalue + (tileSize/2);
-			double drawPosY = (j - canvasPos.y + dec.getyAdjust()) * tileSize - decImage.getHeight()*scalevalue + tileSize;
-			
-			
-				gc.drawImage(decImage, drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
-				if(selectedDecTile != null) {
-					gc.setStroke(Color.BLUE);
-					gc.setLineWidth(2);
-					gc.strokeRect(drawPosX, drawPosY, decImage.getWidth()*scalevalue, decImage.getHeight()*scalevalue);
-				}
-			}
-		}
-			}
-			}
-		
-		/*
-		
-		Image imageById = null;
-		for (int i = canvasXpos; i < canvasXpos + tilesToBePainted; i++) {
-			for (int j = canvasYpos; j < canvasYpos + tilesToBePainted; j++) {
-
-				String name = getTile(new Point(i, j)).getTileImageId();
-				if (images.get(name)==null){
-					imageById = images.get("illuminati.jpg");
-				}
-				else
-					imageById=images.get(name);
-				if (imageById != null) {
-					if (showSolid.isSelected() && !currentLoadZone.getTileMap().getTile(new Point(i, j)).isSolid()) {
-						gc.setGlobalAlpha(0.2);
-					}
-					gc.drawImage(imageById, (i - canvasXpos) * tileSize, (j - canvasYpos) * tileSize, tileSize,
-							tileSize);
-					gc.setGlobalAlpha(1);
-				}
-			}
-		}*/
-	}
-	
 	public boolean selectDecorationAt(double x, double y, Point canvasPos, int tileSize, Map<String, Image> images) {
 		int newIndex = 0;
 		selectedDec = null;
-		selectedDecTile = null;
+		selectedTile = null;
 		selectedDecIndex = 0;
 		
 		for(Map.Entry<Point, Tile> entry : grid.entrySet()) {
@@ -146,7 +72,7 @@ public class TileMap {
 				if(x >= topLeftX && x <= topLeftX + width && y >= topLeftY && y <= topLeftY + height) {
 					if(selectedDec == null) {
 						selectedDec = dec;
-						selectedDecTile = tile;
+						selectedTile = tile;
 						selectedDecIndex = newIndex;
 						return true;
 					}
@@ -169,19 +95,19 @@ public class TileMap {
 	}
 	
 	public boolean decIsSelected(Point pos, int index) {
-		return selectedDecTile != null && selectedDecTile.equals(pos) && selectedDecIndex == index;
+		return selectedTile != null && selectedTile.equals(pos) && selectedDecIndex == index;
 	}
 	
 	public void deleteSelectedDec() {
-		if(selectedDecTile == null)
+		if(selectedTile == null)
 			return;
 		
-		if(selectedDecTile.getDecorations().size() <= selectedDecIndex)
+		if(selectedTile.getDecorations().size() <= selectedDecIndex)
 			return;
 			
 		
-		selectedDecTile.getDecorations().remove(selectedDecIndex);
-		selectedDecTile = null;
+		selectedTile.getDecorations().remove(selectedDecIndex);
+		selectedTile = null;
 	}
 	
 	public static TileMap loadFromFile(File file) {
@@ -198,8 +124,8 @@ public class TileMap {
 		selected = new Point(x, y);
 	}
 	
-	public Tile getSelected() {
-		return getTile(selected);
+	public Tile getSelectedTile() {
+		return selectedTile;
 	}
 	
 	public void removeSelection() {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import tileMapEditor.fxml.view.*?>
+
+
+<TileMenu fx:controller="tileMapEditor.fxml.view.TileMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <TextField fx:id="imageSearchTextField" focusTraversable="false" />
+      <ComboBox fx:id="imageSelectionComboBox" focusTraversable="false" />
+      <HBox>
+         <children>
+            <ListView fx:id="imageListView" prefWidth="100.0" focusTraversable="false" />
+            <VBox spacing="20.0">
+               <children>
+                  <CheckBox mnemonicParsing="false" text="Solid" focusTraversable="false" />
+                  <CheckBox fx:id="showSolidCheckBox" mnemonicParsing="false" text="Show Solid" focusTraversable="false" />
+                  <CheckBox fx:id="selectDecorationCheckBox" mnemonicParsing="false" text="Select Decoration" focusTraversable="false" />
+                  <ComboBox fx:id="tileTypesComboBox" focusTraversable="false" />
+                  <TextField focusTraversable="false" />
+                  <Slider fx:id="decorationSlider" min="0" max="5" focusTraversable="false" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <TextField focusTraversable="false" />
+      <ListView prefHeight="200.0" prefWidth="200.0" focusTraversable="false" />
+   </children>
+</TileMenu>

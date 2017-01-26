@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import tileMapEditor.fxml.view.*?>
+
+<FXHandler fx:controller="tileMapEditor.fxml.view.FXHandler"
+	maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+	minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<left>
+		<fx:include fx:id="tileMenu" source="TileMenu.fxml"
+			focusTraversable="false" />
+	</left>
+	<right>
+		<fx:include fx:id="fileManagerMenu" source="FileManagerMenu.fxml"
+			focusTraversable="false" />
+	</right>
+	<center>
+		<fx:include fx:id="gameCanvas" source="GameCanvas.fxml"
+			BorderPane.alignment="CENTER" onMouseClicked="#stealFocus" />
+	</center>
+</FXHandler>
