@@ -11,16 +11,7 @@ import javafx.scene.image.Image;
 //import javafx.jnlp.FileSaveService;
 
 public class LoadZone {
-	private TileMap tileMap = new TileMap();
 //	private DecorationMap decMap = new DecorationMap(); Unused?
-	
-	public TileMap getTileMap() {
-		return tileMap;
-	}
-
-	public void setTileMap(TileMap tileMap) {
-		this.tileMap = tileMap;
-	}
 
 	/*
 	 * Unused?
@@ -33,12 +24,7 @@ public class LoadZone {
 	}
 	*/
 	
-	public void draw(Canvas canvas, Point pos, int tileSize, boolean showSolid, HashMap<String,Image> tiles, HashMap<String, Image> decorations) {
-		tileMap.draw(canvas, pos, tileSize, showSolid, tiles, decorations);
-//		decMap.draw(canvas, pos, tileSize, decorations);
-	}
-	
-	public void loadFromFile(String fileName) {
+	public void loadFromFile(String fileName, TileMap tileMap) {
 		File file = null;
 		try {
 			file = SaveFileHandler.getInstance().getFile(fileName);
@@ -101,8 +87,7 @@ public class LoadZone {
 	}
 
 
-	public void saveToFile(String fileName) {
-		System.out.println("Denne metoden blir kalt");
-		SaveFileHandler.getInstance().writeFile(fileName, this.tileMap);
+	public void saveToFile(String fileName, TileMap tileMap) {
+		SaveFileHandler.getInstance().writeFile(fileName, tileMap);
 	}
 }
